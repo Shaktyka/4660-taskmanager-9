@@ -1,7 +1,7 @@
 # Личный проект «Менеджер задач» [![Build status][travis-image]][travis-url]
 
 * Студент: [Елена Петренко](https://up.htmlacademy.ru/ecmascript/9/user/4660).
-* Наставник: `Неизвестно`.
+* Наставник: `Без наставника`.
 
 ---
 

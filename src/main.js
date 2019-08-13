@@ -1,12 +1,18 @@
-/**
- * 4. В файле src/main.js опишите функцию для рендеринга компонент.
- * Спецификация функции проста: она принимает элемент (контейнер) и вёрстку,
- * которую требуется отрендерить в этот контейнер.
- */
+const TASKS_AMOUNT = 3;
+
+const menuContainer = document.querySelector(`.control__btn-wrap`);
+const contentContainer = document.querySelector(`.board`);
+const tasksContainer = document.querySelector(`.board__tasks`);
+const filterContainer = document.querySelector(`.main__filter`);
+const searchContainer = document.querySelector(`.main__search`);
+
+let isLoadBtnRendered = null;
+let isMenuRendered = null;
+let isFilterRendered = null;
+let isSearchRendered = null;
 
 // Возвр-т форму создания задачи
-const returnCreateTaskString = () => {
-  return `<article class="card card--edit card--black">
+const returnAddTaskString = () => `<article class="card card--edit card--black">
             <form class="card__form" method="get">
               <div class="card__inner">
                 <div class="card__control">
@@ -226,13 +232,11 @@ const returnCreateTaskString = () => {
                 </div>
               </div>
             </form>
-    </article>`;
-};
+    </article>`.trim();
 
 // Рендерит Mеню
 const returnMenuString =() => {
-  return `<section class="control__btn-wrap">
-          <input
+  return `<input
             type="radio"
             name="control"
             id="control__new-task"
@@ -257,14 +261,12 @@ const returnMenuString =() => {
           />
           <label for="control__statistic" class="control__label"
             >STATISTICS</label
-          >
-        </section>`;
+          >`.trim();
 };
 
 // Рендерит Фильтры
-const returnFilterString = () => {
-  return `<section class="main__filter filter container">
-        <input
+const returnFiltersString = () => {
+  return `<input
           type="radio"
           id="filter__all"
           class="filter__input visually-hidden"
@@ -329,28 +331,24 @@ const returnFilterString = () => {
         />
         <label for="filter__archive" class="filter__label"
           >ARCHIVE <span class="filter__archive-count">115</span></label
-        >
-    </section>`;
+        >`.trim();
 };
 
 // Возвр-т разметку формы поиска
 const returnSearchString = () => {
   return `
-    <section class="main__search search container">
-      <input
-        type="text"
-          id="search__input"
-          class="search__input"
-          placeholder="START TYPING — SEARCH BY WORD, #HASHTAG OR DATE"
-          value="#work"
-      />
-      <label class="visually-hidden" for="search__input">Поиск</label>
-    </section>`;
+    <input
+      type="text"
+        id="search__input"
+        class="search__input"
+        placeholder="START TYPING — SEARCH BY WORD, #HASHTAG OR DATE"
+        value="#work"
+    />
+    <label class="visually-hidden" for="search__input">Поиск</label>`.trim();
 };
 
 // Рендерит карточку задачи
-const returnTaskCardString = () => {
-  return `<article class="card card--black">
+const returnTaskString = () => `<article class="card card--black">
             <div class="card__form">
               <div class="card__inner">
                 <div class="card__control">
@@ -414,10 +412,21 @@ const returnTaskCardString = () => {
                 </div>
               </div>
             </div>
-          </article>`;
-};
+          </article>`.trim();
 
 // Рендерит кнопку «Load more»
-const returnLoadMoreBtnString = () => {
-  return `<button class="load-more" type="button">load more</button>`;
+const returnLoadMoreBtnString = () => `<button class="load-more" type="button">load more</button>`.trim();
+
+// Рендеринг элемента
+const renderElement = (string) => {
+  const template = document.createElement(`template`);
+  template.innerHTML = string;
+  return template.content;
 };
+
+// Рендеринг компонент
+const render = (container, elString) => {
+  // рендерит элемент
+};
+
+

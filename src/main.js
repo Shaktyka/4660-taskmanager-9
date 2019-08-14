@@ -1,18 +1,147 @@
 const TASKS_AMOUNT = 3;
 
-const menuContainer = document.querySelector(`.control__btn-wrap`);
-const contentContainer = document.querySelector(`.board`);
-const tasksContainer = document.querySelector(`.board__tasks`);
-const filterContainer = document.querySelector(`.main__filter`);
-const searchContainer = document.querySelector(`.main__search`);
+const menuContainer = document.querySelector(`.main__control`);
+const mainContainer = document.querySelector(`.main`);
 
-let isLoadBtnRendered = null;
-let isMenuRendered = null;
-let isFilterRendered = null;
-let isSearchRendered = null;
+// Рендерит Mеню
+const returnMenuTemplate = () => {
+  return `<section class="control__btn-wrap">
+          <input
+            type="radio"
+            name="control"
+            id="control__new-task"
+            class="control__input visually-hidden"
+          />
+          <label for="control__new-task" class="control__label control__label--new-task"
+            >+ ADD NEW TASK</label
+          >
+          <input
+            type="radio"
+            name="control"
+            id="control__task"
+            class="control__input visually-hidden"
+            checked
+          />
+          <label for="control__task" class="control__label">TASKS</label>
+          <input
+            type="radio"
+            name="control"
+            id="control__statistic"
+            class="control__input visually-hidden"
+          />
+          <label for="control__statistic" class="control__label"
+            >STATISTICS</label
+          >
+    </section>`.trim();
+};
 
-// Возвр-т форму создания задачи
-const returnAddTaskString = () => `<article class="card card--edit card--black">
+// Возвр-т разметку формы поиска
+const returnSearchTemplate = () => {
+  return `<section class="main__search search container">
+        <input
+          type="text"
+          id="search__input"
+          class="search__input"
+          placeholder="START TYPING — SEARCH BY WORD, #HASHTAG OR DATE"
+        />
+        <label class="visually-hidden" for="search__input">Search</label>
+    </section>`.trim();
+};
+
+// Рендерит Фильтры
+const returnFiltersTemplate = () => {
+  return `<section class="main__filter filter container">
+        <input
+          type="radio"
+          id="filter__all"
+          class="filter__input visually-hidden"
+          name="filter"
+          checked
+        />
+        <label for="filter__all" class="filter__label">
+          All <span class="filter__all-count">13</span></label
+        >
+        <input
+          type="radio"
+          id="filter__overdue"
+          class="filter__input visually-hidden"
+          name="filter"
+          disabled
+        />
+        <label for="filter__overdue" class="filter__label"
+          >Overdue <span class="filter__overdue-count">0</span></label
+        >
+        <input
+          type="radio"
+          id="filter__today"
+          class="filter__input visually-hidden"
+          name="filter"
+          disabled
+        />
+        <label for="filter__today" class="filter__label"
+          >Today <span class="filter__today-count">0</span></label
+        >
+        <input
+          type="radio"
+          id="filter__favorites"
+          class="filter__input visually-hidden"
+          name="filter"
+        />
+        <label for="filter__favorites" class="filter__label"
+          >Favorites <span class="filter__favorites-count">1</span></label
+        >
+        <input
+          type="radio"
+          id="filter__repeating"
+          class="filter__input visually-hidden"
+          name="filter"
+        />
+        <label for="filter__repeating" class="filter__label"
+          >Repeating <span class="filter__repeating-count">1</span></label
+        >
+        <input
+          type="radio"
+          id="filter__tags"
+          class="filter__input visually-hidden"
+          name="filter"
+        />
+        <label for="filter__tags" class="filter__label"
+          >Tags <span class="filter__tags-count">1</span></label
+        >
+        <input
+          type="radio"
+          id="filter__archive"
+          class="filter__input visually-hidden"
+          name="filter"
+        />
+        <label for="filter__archive" class="filter__label"
+          >Archive <span class="filter__archive-count">115</span></label
+        >
+    </section>`.trim();
+};
+
+// Возвращает фильтры сортировки
+const returnSortingTemplate = () => {
+  return `<div class="board__filter-list">
+          <a href="#" class="board__filter">SORT BY DEFAULT</a>
+          <a href="#" class="board__filter">SORT BY DATE up</a>
+          <a href="#" class="board__filter">SORT BY DATE down</a>
+    </div>`.trim();
+};
+
+// Возвращает контейнер для контента
+const returnBoardTemplate = () => {
+  return `<section class="board container"></section>`.trim();
+};
+
+// Возвращает контейнер для карточек заданий
+const returnTasksContainerTemplate = () => {
+  return `<div class="board__tasks"></div>`.trim();
+};
+
+// Возвращает карточку с формой создания задачи
+const returnAddTaskTemplate = () => {
+  return `<article class="card card--edit card--black">
             <form class="card__form" method="get">
               <div class="card__inner">
                 <div class="card__control">
@@ -233,122 +362,11 @@ const returnAddTaskString = () => `<article class="card card--edit card--black">
               </div>
             </form>
     </article>`.trim();
-
-// Рендерит Mеню
-const returnMenuString =() => {
-  return `<input
-            type="radio"
-            name="control"
-            id="control__new-task"
-            class="control__input visually-hidden"
-          />
-          <label for="control__new-task" class="control__label control__label--new-task"
-            >+ ADD NEW TASK</label
-          >
-          <input
-            type="radio"
-            name="control"
-            id="control__task"
-            class="control__input visually-hidden"
-            checked
-          />
-          <label for="control__task" class="control__label">TASKS</label>
-          <input
-            type="radio"
-            name="control"
-            id="control__statistic"
-            class="control__input visually-hidden"
-          />
-          <label for="control__statistic" class="control__label"
-            >STATISTICS</label
-          >`.trim();
-};
-
-// Рендерит Фильтры
-const returnFiltersString = () => {
-  return `<input
-          type="radio"
-          id="filter__all"
-          class="filter__input visually-hidden"
-          name="filter"
-          checked
-        />
-        <label for="filter__all" class="filter__label">
-          ALL <span class="filter__all-count">15</span></label
-        >
-        <input
-          type="radio"
-          id="filter__overdue"
-          class="filter__input visually-hidden"
-          name="filter"
-          disabled
-        />
-        <label for="filter__overdue" class="filter__label"
-          >OVERDUE <span class="filter__overdue-count">0</span></label
-        >
-        <input
-          type="radio"
-          id="filter__today"
-          class="filter__input visually-hidden"
-          name="filter"
-          disabled
-        />
-        <label for="filter__today" class="filter__label"
-          >TODAY <span class="filter__today-count">0</span></label
-        >
-        <input
-          type="radio"
-          id="filter__favorites"
-          class="filter__input visually-hidden"
-          name="filter"
-        />
-        <label for="filter__favorites" class="filter__label"
-          >FAVORITES <span class="filter__favorites-count">7</span></label
-        >
-        <input
-          type="radio"
-          id="filter__repeating"
-          class="filter__input visually-hidden"
-          name="filter"
-        />
-        <label for="filter__repeating" class="filter__label"
-          >Repeating <span class="filter__repeating-count">2</span></label
-        >
-        <input
-          type="radio"
-          id="filter__tags"
-          class="filter__input visually-hidden"
-          name="filter"
-        />
-        <label for="filter__tags" class="filter__label"
-          >Tags <span class="filter__tags-count">6</span></label
-        >
-        <input
-          type="radio"
-          id="filter__archive"
-          class="filter__input visually-hidden"
-          name="filter"
-        />
-        <label for="filter__archive" class="filter__label"
-          >ARCHIVE <span class="filter__archive-count">115</span></label
-        >`.trim();
-};
-
-// Возвр-т разметку формы поиска
-const returnSearchString = () => {
-  return `
-    <input
-      type="text"
-        id="search__input"
-        class="search__input"
-        placeholder="START TYPING — SEARCH BY WORD, #HASHTAG OR DATE"
-        value="#work"
-    />
-    <label class="visually-hidden" for="search__input">Поиск</label>`.trim();
 };
 
 // Рендерит карточку задачи
-const returnTaskString = () => `<article class="card card--black">
+const returnTaskTemplate = () => {
+  return `<article class="card card--black">
             <div class="card__form">
               <div class="card__inner">
                 <div class="card__control">
@@ -412,10 +430,13 @@ const returnTaskString = () => `<article class="card card--black">
                 </div>
               </div>
             </div>
-          </article>`.trim();
+    </article>`.trim();
+};
 
 // Рендерит кнопку «Load more»
-const returnLoadMoreBtnString = () => `<button class="load-more" type="button">load more</button>`.trim();
+const returnLoadMoreBtnTemplate = () => {
+  return `<button class="load-more" type="button">load more</button>`.trim();
+};
 
 // Рендеринг элемента
 const renderElement = (string) => {
@@ -424,9 +445,35 @@ const renderElement = (string) => {
   return template.content;
 };
 
-// Рендеринг компонент
-const render = (container, elString) => {
-  // рендерит элемент
+// Рендерит компоненты
+const render = (container, template, amount = 0) => {
+  let content = null;
+  if (amount) {
+    content = new DocumentFragment();
+    for (let i = 0; i < amount; i++) {
+      content.appendChild(renderElement(template));
+    }
+  } else {
+    content = renderElement(template);
+  }
+  container.appendChild(content);
 };
 
+// Добавляем компоненты
+render(menuContainer, returnMenuTemplate());
+render(mainContainer, returnSearchTemplate());
+render(mainContainer, returnFiltersTemplate());
+render(mainContainer, returnBoardTemplate());
 
+const contentContainer = document.querySelector(`.board`);
+
+render(contentContainer, returnSortingTemplate());
+render(contentContainer, returnTasksContainerTemplate());
+
+const tasksContainer = document.querySelector(`.board__tasks`);
+
+// Рендерим карточки
+render(tasksContainer, returnAddTaskTemplate());
+render(tasksContainer, returnTaskTemplate(), TASKS_AMOUNT);
+
+render(contentContainer, returnLoadMoreBtnTemplate());

@@ -3,10 +3,8 @@ import {addLeadZero} from '../utils.js';
 // Массив названий месяцов года
 const months = [`January`, `February`, `March`, `April`, `May`, `June`, `July`, `August`, `September`, `October`, `November`, `December`];
 
-// Отрисовать время
-
-
 export const createTaskTemplate = ({ description, dueDate, repeatingDays, tags, color }) => {
+  const date = new Date(dueDate);
   return `<article class="card card--${color} ${Object.keys(repeatingDays).some(day => repeatingDays[day]) ? `card--repeat`: ``}">
             <div class="card__form">
               <div class="card__inner">
@@ -40,8 +38,8 @@ export const createTaskTemplate = ({ description, dueDate, repeatingDays, tags, 
                     <div class="card__dates">
                       <div class="card__date-deadline">
                         <p class="card__input-deadline-wrap">
-                          <span class="card__date">${new Date(dueDate).getDate()} ${months[new Date(dueDate).getMonth()]}</span>
-                          <span class="card__time">${addLeadZero(new Date(dueDate).getHours())}:${addLeadZero(new Date(dueDate).getMinutes())} ${new Date(dueDate).getHours() >= 12 ? `PM` : `AM`}</span>
+                          <span class="card__date">${date.getDate()} ${months[date.getMonth()]}</span>
+                          <span class="card__time">${addLeadZero(date.getHours())}:${addLeadZero(date.getMinutes())} ${date.getHours() >= 12 ? `PM` : `AM`}</span>
                         </p>
                       </div>
                     </div>

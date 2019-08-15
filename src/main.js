@@ -12,11 +12,15 @@ import {createTaskData} from './task-data.js';
 // Количество задач
 const TasksAmount = {
   START: 3,
-  MAX: 20
+  MAX: 20,
+  STEP: 8
 };
 
 const menuContainer = document.querySelector(`.main__control`);
 const mainContainer = document.querySelector(`.main`);
+
+// Все задачи
+const allTasks = [];
 
 // Рендеринг элемента из разметки
 const renderElement = (string) => {

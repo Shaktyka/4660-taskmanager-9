@@ -1,7 +1,10 @@
-// Рендерит карточку задачи
+import {addLeadZero} from '../utils.js';
 
-// Дата 23 September
-// Время
+// Массив названий месяцов года
+const months = [`January`, `February`, `March`, `April`, `May`, `June`, `July`, `August`, `September`, `October`, `November`, `December`];
+
+// Отрисовать время
+
 
 export const createTaskTemplate = ({ description, dueDate, repeatingDays, tags, color }) => {
   return `<article class="card card--${color} ${Object.keys(repeatingDays).some(day => repeatingDays[day]) ? `card--repeat`: ``}">
@@ -37,8 +40,8 @@ export const createTaskTemplate = ({ description, dueDate, repeatingDays, tags, 
                     <div class="card__dates">
                       <div class="card__date-deadline">
                         <p class="card__input-deadline-wrap">
-                          <span class="card__date">${new Date(dueDate).toDateString()}</span>
-                          <span class="card__time">11:15 PM</span>
+                          <span class="card__date">${new Date(dueDate).getDate()} ${months[new Date(dueDate).getMonth()]}</span>
+                          <span class="card__time">${addLeadZero(new Date(dueDate).getHours())}:${addLeadZero(new Date(dueDate).getMinutes())} ${new Date(dueDate).getHours() >= 12 ? `PM` : `AM`}</span>
                         </p>
                       </div>
                     </div>

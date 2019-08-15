@@ -1,6 +1,6 @@
 import {getRandomNumber} from './utils.js';
 
-// Секунд за неделю
+// Миллисекунд за неделю
 const WEEK_SECONDS = 7 * 24 * 3600 * 1000;
 
 // Задачи 
@@ -68,7 +68,3 @@ export const createTaskData = () => {
     isArchive: getBoolean()
   }
 };
-
-console.log(createTaskData());
-
-// Написать код генерации случайного набора хэштегов

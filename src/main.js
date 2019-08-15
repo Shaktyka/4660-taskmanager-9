@@ -7,7 +7,7 @@ import {createSortTemplate} from './components/sort-template.js';
 import {createTaskEditTemplate} from './components/task-edit-template.js';
 import {createBoardTemplate} from './components/board-template.js';
 import {createTasksContainerTemplate} from './components/tasks-container-template.js';
-import {makeTasks} from './make-task.js';
+import {createTaskData} from './task-data.js';
 
 // Количество задач
 const TasksAmount = {
@@ -54,8 +54,8 @@ render(contentContainer, createTasksContainerTemplate());
 const tasksContainer = document.querySelector(`.board__tasks`);
 
 // Рендерим карточки
-render(tasksContainer, createTaskEditTemplate());
-render(tasksContainer, createTaskTemplate(), TasksAmount.START);
+render(tasksContainer, createTaskEditTemplate(createTaskData()));
+render(tasksContainer, createTaskTemplate(createTaskData()), TasksAmount.START);
 
 // Кнопка "Load More"
 render(contentContainer, createLoadMoreBtnTemplate());

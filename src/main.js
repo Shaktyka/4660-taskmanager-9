@@ -7,9 +7,13 @@ import {createSortTemplate} from './components/sort-template.js';
 import {createTaskEditTemplate} from './components/task-edit-template.js';
 import {createBoardTemplate} from './components/board-template.js';
 import {createTasksContainerTemplate} from './components/tasks-container-template.js';
+import {makeTasks} from './make-task.js';
 
-const TASKS_AMOUNT = 3;
-const TASKS_AMOUNT_MAX = 20;
+// Количество задач
+const TasksAmount = {
+  START: 3,
+  MAX: 20
+};
 
 const menuContainer = document.querySelector(`.main__control`);
 const mainContainer = document.querySelector(`.main`);
@@ -51,7 +55,16 @@ const tasksContainer = document.querySelector(`.board__tasks`);
 
 // Рендерим карточки
 render(tasksContainer, createTaskEditTemplate());
-render(tasksContainer, createTaskTemplate(), TASKS_AMOUNT);
+render(tasksContainer, createTaskTemplate(), TasksAmount.START);
 
 // Кнопка "Load More"
 render(contentContainer, createLoadMoreBtnTemplate());
+const loadMoreBtn = contentContainer.querySelector(`.load-more`);
+
+// Обработчик нажатия на кнопку "Load More"
+const onLoadMoreBtnClick = (evt) => {
+  evt.preventDefault();
+  // Добавление в контейнер ещё изображений
+};
+
+loadMoreBtn.addEventListener(`click`, onLoadMoreBtnClick);

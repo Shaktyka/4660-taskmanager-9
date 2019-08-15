@@ -1,5 +1,8 @@
 import {getRandomNumber} from './utils.js';
 
+// Секунд за неделю
+const WEEK_SECONDS = 7 * 24 * 3600 * 1000;
+
 // Задачи 
 const descriptions = [
   `Пересмотреть лекцию`,
@@ -49,24 +52,19 @@ const shuffleArray = (array) => {
 // Возвращает х элементов из массива
 const getElementsFromArray = (array, num) => shuffleArray(array).slice(0, num);
 
-// Возвращает дату в диапазоне
-const getRandomDate = () => {
-  // return ;
-};
-
 // Возвращает объект с рандомными данными для задачи
 export const createTaskData = () => {
   return {
     description: descriptions[getRandomNumber(0, descriptions.length - 1)],
-    dueDate: `Объект типа Date`,
+    dueDate: getRandomNumber(Date.now() - WEEK_SECONDS, Date.now() + WEEK_SECONDS),
     repeatingDays: {
-      `Mo`: getBoolean(),
-      `Tu`: getBoolean(),
-      `We`: getBoolean(),
-      `Th`: getBoolean(),
-      `Fr`: getBoolean(),
-      `Sa`: getBoolean(),
-      `Su`: getBoolean()
+      'Mo': getBoolean(),
+      'Tu': getBoolean(),
+      'We': getBoolean(),
+      'Th': getBoolean(),
+      'Fr': getBoolean(),
+      'Sa': getBoolean(),
+      'Su': getBoolean()
     },
     tags: `от 0 до 3 тегов рандомно из Set`,
     color: colors[getRandomNumber(0, colors.length - 1)],
@@ -75,5 +73,6 @@ export const createTaskData = () => {
   }
 };
 
-// Написать код для генерации даты
+console.log(createTaskData());
+
 // Написать код генерации случайного набора хэштегов

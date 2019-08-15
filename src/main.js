@@ -9,6 +9,7 @@ import {createBoardTemplate} from './components/board-template.js';
 import {createTasksContainerTemplate} from './components/tasks-container-template.js';
 
 const TASKS_AMOUNT = 3;
+const TASKS_AMOUNT_MAX = 20;
 
 const menuContainer = document.querySelector(`.main__control`);
 const mainContainer = document.querySelector(`.main`);

@@ -39,18 +39,14 @@ const colors = [
 // Возвращает true или false
 const getBoolean = () => Math.random() >= 0.5;
 
-// Перемешивает массив
-const shuffleArray = (array) => {
-  const copiedArray = array.slice();
-  for (let i = copiedArray.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [copiedArray[i], copiedArray[j]] = [copiedArray[j], copiedArray[i]];
+// Возвращает Set из num тегов
+const getHashes = (array, num) => {
+  const tagsSet = new Set();
+  while (tagsSet.size < num) {
+    tagsSet.add(array[getRandomNumber(0, array.length - 1)]);
   }
-  return copiedArray;
+  return tagsSet;
 };
-
-// Возвращает х элементов из массива
-const getElementsFromArray = (array, num) => shuffleArray(array).slice(0, num);
 
 // Возвращает объект с рандомными данными для задачи
 export const createTaskData = () => {
@@ -58,15 +54,15 @@ export const createTaskData = () => {
     description: descriptions[getRandomNumber(0, descriptions.length - 1)],
     dueDate: getRandomNumber(Date.now() - WEEK_SECONDS, Date.now() + WEEK_SECONDS),
     repeatingDays: {
-      'Mo': getBoolean(),
-      'Tu': getBoolean(),
-      'We': getBoolean(),
-      'Th': getBoolean(),
-      'Fr': getBoolean(),
-      'Sa': getBoolean(),
-      'Su': getBoolean()
+      'mo': getBoolean(),
+      'tu': getBoolean(),
+      'we': getBoolean(),
+      'th': getBoolean(),
+      'fr': getBoolean(),
+      'sa': getBoolean(),
+      'su': getBoolean()
     },
-    tags: `от 0 до 3 тегов рандомно из Set`,
+    tags: getHashes(hashtags, getRandomNumber(0, 3)),
     color: colors[getRandomNumber(0, colors.length - 1)],
     isFavorite: getBoolean(),
     isArchive: getBoolean()

@@ -1,5 +1,5 @@
 // Возвращает карточку с формой создания задачи
-export const createAddTaskTemplate = () => {
+export const createTaskEditTemplate = () => {
   return `<article class="card card--edit card--black">
             <form class="card__form" method="get">
               <div class="card__inner">

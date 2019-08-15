@@ -4,7 +4,7 @@ import {createTaskTemplate} from './components/task-template.js';
 import {createSearchTemplate} from './components/search-template.js';
 import {createFilterTemplate} from './components/filter-template.js';
 import {createSortTemplate} from './components/sort-template.js';
-import {createAddTaskTemplate} from './components/add-task-template.js';
+import {createTaskEditTemplate} from './components/task-edit-template.js';
 import {createBoardTemplate} from './components/board-template.js';
 import {createTasksContainerTemplate} from './components/tasks-container-template.js';
 
@@ -49,7 +49,7 @@ render(contentContainer, createTasksContainerTemplate());
 const tasksContainer = document.querySelector(`.board__tasks`);
 
 // Рендерим карточки
-render(tasksContainer, createAddTaskTemplate());
+render(tasksContainer, createTaskEditTemplate());
 render(tasksContainer, createTaskTemplate(), TASKS_AMOUNT);
 
 // Кнопка "Load More"

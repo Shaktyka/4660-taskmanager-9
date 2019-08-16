@@ -1,7 +1,19 @@
 // Рендерит Фильтр
-export const makeFilter = () => {
-  return `<section class="main__filter filter container">
-        <input
+export const makeFilter = (data) => {
+  return `<input
+      type="radio"
+      id="filter__${data.title}"
+      class="filter__input visually-hidden"
+      name="filter"
+      disabled
+    />
+    <label for="filter__${data.title}" class="filter__label">
+      ${data.title} <span class="filter__${data.title}-count">${data.count}</span>
+    </label>`.trim();
+};
+
+/*
+<input
           type="radio"
           id="filter__all"
           class="filter__input visually-hidden"
@@ -67,5 +79,4 @@ export const makeFilter = () => {
         <label for="filter__archive" class="filter__label"
           >Archive <span class="filter__archive-count">115</span></label
         >
-    </section>`.trim();
-};
+*/

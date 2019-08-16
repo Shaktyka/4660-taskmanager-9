@@ -8,6 +8,7 @@ import {makeTaskEdit} from './components/task-edit.js';
 import {makeBoard} from './components/board.js';
 import {makeTasksContainer} from './components/tasks-container.js';
 import {makeTaskData} from './task-data.js';
+import {filterData} from './filter-data.js';
 import {getRandomNumber} from './utils.js';
 
 // Количество задач
@@ -21,6 +22,10 @@ const mainContainer = document.querySelector(`.main`);
 
 // Все задачи
 const allTasks = [];
+
+const getFilterContainerTemplate = () => {
+  return `<section class="main__filter filter container"></section>`;
+};
 
 // Рендеринг массива с задачами
 const renderTaskArray = (amount) => {
@@ -52,20 +57,22 @@ const render = (container, template, amount = 0) => {
   container.appendChild(content);
 };
 
-// Рендерим компоненты на страницу
+// + меню
 render(menuContainer, makeMenu());
+// + форма поиска
 render(mainContainer, makeSearch());
-render(mainContainer, makeFilter());
+// + блок для меню
+render(mainContainer, getFilterContainerTemplate());
+const filterContainer = mainContainer.querySelector(`.main__filter`);
+render(filterContainer, makeFilter());
+// + блок для контента
 render(mainContainer, makeBoard());
-
 const contentContainer = document.querySelector(`.board`);
-
+// + сортировка
 render(contentContainer, makeSort());
+// + контейнер для тасков
 render(contentContainer, makeTasksContainer());
-
-// Контейнер для массива задач
 const tasksContainer = document.querySelector(`.board__tasks`);
-
 // Рендерим карточки
 render(tasksContainer, makeTaskEdit(allTasks[0]));
 render(tasksContainer, makeTask(makeTaskData()), TasksAmount.START);

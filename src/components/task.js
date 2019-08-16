@@ -3,7 +3,8 @@ import {addLeadZero} from '../utils.js';
 // Массив названий месяцов года
 const months = [`January`, `February`, `March`, `April`, `May`, `June`, `July`, `August`, `September`, `October`, `November`, `December`];
 
-export const makeTask = ({ description, dueDate, repeatingDays, tags, color }) => {
+// Возвращает карточку задания
+export const makeTask = ({ description, dueDate, repeatingDays, tags, color, isFavorite, isArchive }) => {
   const date = new Date(dueDate);
   return `<article class="card card--${color} ${Object.keys(repeatingDays).some(day => repeatingDays[day]) ? `card--repeat`: ``}">
             <div class="card__form">
@@ -12,12 +13,12 @@ export const makeTask = ({ description, dueDate, repeatingDays, tags, color }) =
                   <button type="button" class="card__btn card__btn--edit">
                     edit
                   </button>
-                  <button type="button" class="card__btn card__btn--archive">
+                  <button type="button" class="card__btn card__btn--archive ${isArchive ? `card__btn--disabled` : ``}">
                     archive
                   </button>
                   <button
                     type="button"
-                    class="card__btn card__btn--favorites card__btn--disabled"
+                    class="card__btn card__btn--favorites ${isFavorite ? `card__btn--disabled` : ``}"
                   >
                     favorites
                   </button>

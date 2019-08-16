@@ -8,11 +8,11 @@ import {makeTaskEdit} from './components/task-edit.js';
 import {makeBoard} from './components/board.js';
 import {makeTasksContainer} from './components/tasks-container.js';
 import {makeTaskData} from './task-data.js';
+import {getRandomNumber} from './utils.js';
 
 // Количество задач
 const TasksAmount = {
-  START: 3,
-  MAX: 20,
+  START: 8,
   STEP: 8
 };
 
@@ -21,6 +21,15 @@ const mainContainer = document.querySelector(`.main`);
 
 // Все задачи
 const allTasks = [];
+
+// Рендеринг массива с задачами
+const renderTaskArray = (amount) => {
+  for (let i = 0; i < amount; i++) {
+    allTasks.push(makeTaskData());
+  }
+};
+
+renderTaskArray(getRandomNumber(10, 30));
 
 // Рендеринг элемента из разметки
 const renderElement = (string) => {
@@ -58,7 +67,7 @@ render(contentContainer, makeTasksContainer());
 const tasksContainer = document.querySelector(`.board__tasks`);
 
 // Рендерим карточки
-render(tasksContainer, makeTaskEdit(makeTaskData()));
+render(tasksContainer, makeTaskEdit(allTasks[0]));
 render(tasksContainer, makeTask(makeTaskData()), TasksAmount.START);
 
 // Кнопка "Load More"
@@ -68,7 +77,7 @@ const loadMoreBtn = contentContainer.querySelector(`.load-more`);
 // Обработчик нажатия на кнопку "Load More"
 const onLoadMoreBtnClick = (evt) => {
   evt.preventDefault();
-  // Добавление в контейнер ещё изображений
+  // Добавление в контейнер ещё карточек из массива
 };
 
 loadMoreBtn.addEventListener(`click`, onLoadMoreBtnClick);

@@ -1,6 +1,15 @@
+import {addLeadZero} from '../utils.js';
+
+// Массив названий месяцов года
+const months = [`January`, `February`, `March`, `April`, `May`, `June`, `July`, `August`, `September`, `October`, `November`, `December`];
+
 // Возвращает карточку с формой создания задачи
-export const makeTaskEdit = () => {
-  return `<article class="card card--edit card--black">
+export const makeTaskEdit = ({ description, dueDate, repeatingDays, tags, color }) => {
+  const date = new Date(dueDate);
+
+  // console.log(tags.size);
+
+  return `<article class="card card--edit card--${color} ${Object.keys(repeatingDays).some(day => repeatingDays[day]) ? `card--repeat`: ``}">
             <form class="card__form" method="get">
               <div class="card__inner">
                 <div class="card__control">
@@ -27,7 +36,7 @@ export const makeTaskEdit = () => {
                       class="card__text"
                       placeholder="Start typing your text here..."
                       name="text"
-                    >This is example of new task, you can add picture, set date and time, add tags.</textarea>
+                    >${description}</textarea>
                   </label>
                 </div>
 
@@ -35,7 +44,7 @@ export const makeTaskEdit = () => {
                   <div class="card__details">
                     <div class="card__dates">
                       <button class="card__date-deadline-toggle" type="button">
-                        date: <span class="card__date-status">no</span>
+                        date: <span class="card__date-status">${date.getDate() ? (date.getDate() + ` ` + months[date.getMonth()]) : `no`}</span>
                       </button>
 
                       <fieldset class="card__date-deadline" disabled>
@@ -53,7 +62,7 @@ export const makeTaskEdit = () => {
                         repeat:<span class="card__repeat-status">no</span>
                       </button>
 
-                      <fieldset class="card__repeat-days" disabled>
+                      <fieldset class="card__repeat-days" ${Object.keys(repeatingDays).some(day => repeatingDays[day]) ? ``: `disabled`}>
                         <div class="card__repeat-days-inner">
                           <input
                             class="visually-hidden card__repeat-day-input"
@@ -133,7 +142,7 @@ export const makeTaskEdit = () => {
                     </div>
 
                     <div class="card__hashtag">
-                      <div class="card__hashtag-list"></div>
+                      <div class="card__hashtag-list">${tags.length ? tags : ``}</div>
 
                       <label>
                         <input

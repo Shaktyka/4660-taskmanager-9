@@ -49,7 +49,7 @@ const getHashes = (array, num) => {
 };
 
 // Возвращает объект с рандомными данными для задачи
-export const createTaskData = () => {
+export const makeTaskData = () => {
   return {
     description: descriptions[getRandomNumber(0, descriptions.length - 1)],
     dueDate: getRandomNumber(Date.now() - WEEK_SECONDS, Date.now() + WEEK_SECONDS),

@@ -1,13 +1,13 @@
-import {createMenuTemplate} from './components/menu-template.js';
-import {createLoadMoreBtnTemplate} from './components/load-more-btn.js';
-import {createTaskTemplate} from './components/task-template.js';
-import {createSearchTemplate} from './components/search-template.js';
-import {createFilterTemplate} from './components/filter-template.js';
-import {createSortTemplate} from './components/sort-template.js';
-import {createTaskEditTemplate} from './components/task-edit-template.js';
-import {createBoardTemplate} from './components/board-template.js';
-import {createTasksContainerTemplate} from './components/tasks-container-template.js';
-import {createTaskData} from './task-data.js';
+import {makeMenu} from './components/menu.js';
+import {makeLoadMoreBtn} from './components/load-more-btn.js';
+import {makeTask} from './components/task.js';
+import {makeSearch} from './components/search.js';
+import {makeFilter} from './components/filter.js';
+import {makeSort} from './components/sort.js';
+import {makeTaskEdit} from './components/task-edit.js';
+import {makeBoard} from './components/board.js';
+import {makeTasksContainer} from './components/tasks-container.js';
+import {makeTaskData} from './task-data.js';
 
 // Количество задач
 const TasksAmount = {
@@ -44,25 +44,25 @@ const render = (container, template, amount = 0) => {
 };
 
 // Рендерим компоненты на страницу
-render(menuContainer, createMenuTemplate());
-render(mainContainer, createSearchTemplate());
-render(mainContainer, createFilterTemplate());
-render(mainContainer, createBoardTemplate());
+render(menuContainer, makeMenu());
+render(mainContainer, makeSearch());
+render(mainContainer, makeFilter());
+render(mainContainer, makeBoard());
 
 const contentContainer = document.querySelector(`.board`);
 
-render(contentContainer, createSortTemplate());
-render(contentContainer, createTasksContainerTemplate());
+render(contentContainer, makeSort());
+render(contentContainer, makeTasksContainer());
 
 // Контейнер для массива задач
 const tasksContainer = document.querySelector(`.board__tasks`);
 
 // Рендерим карточки
-render(tasksContainer, createTaskEditTemplate(createTaskData()));
-render(tasksContainer, createTaskTemplate(createTaskData()), TasksAmount.START);
+render(tasksContainer, makeTaskEdit(makeTaskData()));
+render(tasksContainer, makeTask(makeTaskData()), TasksAmount.START);
 
 // Кнопка "Load More"
-render(contentContainer, createLoadMoreBtnTemplate());
+render(contentContainer, makeLoadMoreBtn());
 const loadMoreBtn = contentContainer.querySelector(`.load-more`);
 
 // Обработчик нажатия на кнопку "Load More"

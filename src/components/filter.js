@@ -1,5 +1,5 @@
 // Рендерит Фильтр
-export const createFilterTemplate = () => {
+export const makeFilter = () => {
   return `<section class="main__filter filter container">
         <input
           type="radio"

@@ -1,5 +1,5 @@
 // Возвр-т разметку формы поиска
-export const createSearchTemplate = () => {
+export const makeSearch = () => {
   return `<section class="main__search search container">
         <input
           type="text"

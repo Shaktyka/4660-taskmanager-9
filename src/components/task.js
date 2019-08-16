@@ -3,7 +3,7 @@ import {addLeadZero} from '../utils.js';
 // Массив названий месяцов года
 const months = [`January`, `February`, `March`, `April`, `May`, `June`, `July`, `August`, `September`, `October`, `November`, `December`];
 
-export const createTaskTemplate = ({ description, dueDate, repeatingDays, tags, color }) => {
+export const makeTask = ({ description, dueDate, repeatingDays, tags, color }) => {
   const date = new Date(dueDate);
   return `<article class="card card--${color} ${Object.keys(repeatingDays).some(day => repeatingDays[day]) ? `card--repeat`: ``}">
             <div class="card__form">

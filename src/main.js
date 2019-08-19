@@ -3,13 +3,16 @@ import {makeLoadMoreBtn} from './components/load-more-btn.js';
 import {makeTask} from './components/task.js';
 import {makeSearch} from './components/search.js';
 import {makeFilter} from './components/filter.js';
-import {makeSort} from './components/sort.js';
+// import {makeSort} from './components/sort.js';
 import {makeTaskEdit} from './components/task-edit.js';
 import {makeBoard} from './components/board.js';
 import {makeTasksContainer} from './components/tasks-container.js';
+import {makeSortContainer} from './components/sort-container.js';
+import {makeSortElement} from './components/sort-element.js';
 import {makeTaskData} from './task-data.js';
 import {filterData} from './filter-data.js';
 import {getRandomNumber} from './utils.js';
+import {sortFilterArr} from './data.js';
 
 // Количество задач
 const TasksAmount = {
@@ -64,12 +67,22 @@ render(mainContainer, makeSearch());
 // + блок для меню
 render(mainContainer, getFilterContainerTemplate());
 const filterContainer = mainContainer.querySelector(`.main__filter`);
-render(filterContainer, makeFilter());
+//render(filterContainer, makeFilter());
 // + блок для контента
 render(mainContainer, makeBoard());
 const contentContainer = document.querySelector(`.board`);
 // + сортировка
-render(contentContainer, makeSort());
+render(contentContainer, makeSortContainer());
+const sortContainer = contentContainer.querySelector(`.board__filter-list`);
+// Склеим строку из элементов
+const makeSortString = (dataArr) => {
+  let sortString = ``;
+  dataArr.forEach((el) => {
+    sortString += makeSortElement(el);
+  });
+  return sortString;
+};
+render(sortContainer, makeSortString(sortFilterArr));
 // + контейнер для тасков
 render(contentContainer, makeTasksContainer());
 const tasksContainer = document.querySelector(`.board__tasks`);

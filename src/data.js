@@ -1,17 +1,17 @@
-import {getRandomNumber} from './utils.js';
+// import {getRandomNumber} from './utils.js';
 
 // Данные для sorting фильтра
 export const sortFilterArr = [
   {
   	href: `#`,
-  	title: `Sort by default`
+  	title: `default`
   },
   {
   	href: `#`,
-  	title: `Sort by date up`
+  	title: `date up`
   },
   {
   	href: `#`,
-  	title: `Sort by date down`
+  	title: `date down`
   }
 ];

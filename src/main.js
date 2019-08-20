@@ -88,10 +88,11 @@ render(contentContainer, makeSortContainer());
 const sortContainer = contentContainer.querySelector(`.board__filter-list`);
 renderSortFilter(sortContainer, sortFilterData);
 
-// Контенйнер для карточек
+// Контейнер для карточек
 render(contentContainer, makeTasksContainer());
 const tasksContainer = document.querySelector(`.board__tasks`);
 // Рендерим карточки
+console.log(allTasks[0]);
 render(tasksContainer, makeTaskEdit(allTasks[0]));
 render(tasksContainer, makeTask(makeTaskData()), TasksAmount.START);
 

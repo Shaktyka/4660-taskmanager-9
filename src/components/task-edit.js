@@ -4,11 +4,11 @@ import {addLeadZero} from '../utils.js';
 const months = [`January`, `February`, `March`, `April`, `May`, `June`, `July`, `August`, `September`, `October`, `November`, `December`];
 
 // Возвращает карточку с формой создания задачи
-export const makeTaskEdit = ({ description, dueDate, repeatingDays, tags, color }) => {
+export const makeTaskEdit = ({description, dueDate, repeatingDays, tags, color}) => {
   const date = new Date(dueDate);
 
   // console.log(tags.size);
-
+  // 
   return `<article class="card card--edit card--${color} ${Object.keys(repeatingDays).some(day => repeatingDays[day]) ? `card--repeat`: ``}">
             <form class="card__form" method="get">
               <div class="card__inner">
@@ -142,7 +142,7 @@ export const makeTaskEdit = ({ description, dueDate, repeatingDays, tags, color 
                     </div>
 
                     <div class="card__hashtag">
-                      <div class="card__hashtag-list">${tags.length ? tags : ``}</div>
+                      <div class="card__hashtag-list">${tags.size ? tags : ``}</div>
 
                       <label>
                         <input
@@ -230,4 +230,4 @@ export const makeTaskEdit = ({ description, dueDate, repeatingDays, tags, color 
               </div>
             </form>
     </article>`.trim();
-};
+}; 

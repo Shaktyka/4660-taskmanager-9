@@ -4,15 +4,15 @@ import {getRandomNumber} from './utils.js';
 export const sortFilterData = [
   {
   	href: `#`,
-  	title: `default`
+  	title: `DEFAULT`
   },
   {
   	href: `#`,
-  	title: `date up`
+  	title: `DATE up`
   },
   {
   	href: `#`,
-  	title: `date down`
+  	title: `DATE down`
   }
 ];
 

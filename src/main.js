@@ -60,23 +60,37 @@ render(mainContainer, makeSearch());
 // + блок для меню
 render(mainContainer, getFilterContainerTemplate());
 const filterContainer = mainContainer.querySelector(`.main__filter`);
+
 //render(filterContainer, makeFilter());
 // + блок для контента
 render(mainContainer, makeBoard());
 const contentContainer = document.querySelector(`.board`);
-// + сортировка
+
+// Склеим строку из элементов
+// const makeSortString = (dataArr) => {
+//   let sortString = ``;
+//   dataArr.forEach((el) => {
+//     sortString += makeSortElement(el);
+//   });
+//   return sortString;
+// };
+// render(sortContainer, makeSortString(sortFilterData));
+// + контейнер для тасков
+
+// СОРТИРОВКА
+// Рендеринт sort фильтра
+const renderSortFilter = (container, dataArr) => {
+  let fragment = new DocumentFragment();
+  dataArr.forEach((dataEl) => {
+    const el = createElement(makeSortElement(dataEl));
+    fragment.appendChild(el);
+  });
+  container.appendChild(fragment);
+};
 render(contentContainer, makeSortContainer());
 const sortContainer = contentContainer.querySelector(`.board__filter-list`);
-// Склеим строку из элементов
-const makeSortString = (dataArr) => {
-  let sortString = ``;
-  dataArr.forEach((el) => {
-    sortString += makeSortElement(el);
-  });
-  return sortString;
-};
-render(sortContainer, makeSortString(sortFilterData));
-// + контейнер для тасков
+renderSortFilter(sortContainer, sortFilterData);
+
 render(contentContainer, makeTasksContainer());
 const tasksContainer = document.querySelector(`.board__tasks`);
 // Рендерим карточки

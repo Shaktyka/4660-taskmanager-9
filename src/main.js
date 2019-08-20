@@ -92,9 +92,16 @@ renderSortFilter(sortContainer, sortFilterData);
 render(contentContainer, makeTasksContainer());
 const tasksContainer = document.querySelector(`.board__tasks`);
 // Рендерим карточки
-console.log(allTasks[0]);
-render(tasksContainer, makeTaskEdit(allTasks[0]));
-render(tasksContainer, makeTask(makeTaskData()), TasksAmount.START);
+// console.log(allTasks[0]);
+  render(tasksContainer, makeTaskEdit(allTasks[0]));
+// Рендеринг карточек
+
+const renderTasks = (tasksContainer, dataArr) => {
+  
+  
+};
+
+render(tasksContainer, makeTask(makeTaskData()));
 
 // Кнопка "Load More"
 render(contentContainer, makeLoadMoreBtn());

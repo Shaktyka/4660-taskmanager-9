@@ -22,17 +22,14 @@ const TasksAmount = {
 const menuContainer = document.querySelector(`.main__control`);
 const mainContainer = document.querySelector(`.main`);
 
-// Все задачи
-const allTasks = [];
-
 // Рендеринг массива с задачами
+const allTasks = [];
 const renderTaskArray = (amount) => {
   for (let i = 0; i < amount; i++) {
     allTasks.push(makeTaskData());
   }
 };
-
-renderTaskArray(getRandomNumber(10, 30));
+renderTaskArray(getRandomNumber(10, 40));
 
 // Добавляет компонент(ы) в контейнер
 const render = (container, template, amount = 0) => {
@@ -61,10 +58,9 @@ const filterContainer = mainContainer.querySelector(`.main__filter`);
 // Рендеринг фильтра
 const renderFilter = (container, dataArr) => {
   let fragment = new DocumentFragment();
-  dataArr.forEach((dataEl) => {
-    const isActiveFilter = dataEl === `All`;
-    const amount = getRandomNumber(0, 15);
-    const elements = createElement(makeFilter(dataEl, isActiveFilter, amount));
+  dataArr.forEach((dataObj) => {
+    const isActiveFilter = dataObj.title === `All`;
+    const elements = createElement(makeFilter(dataObj, isActiveFilter));
     Array.from(elements).forEach((el) => {
       fragment.appendChild(el);
     });
@@ -74,7 +70,7 @@ const renderFilter = (container, dataArr) => {
 
 renderFilter(filterContainer, filterData);
 
-// + блок для контента
+// КОНТЕНТ
 render(mainContainer, makeBoard());
 const contentContainer = document.querySelector(`.board`);
 

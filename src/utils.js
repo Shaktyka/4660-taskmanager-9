@@ -4,4 +4,11 @@ export const getRandomNumber = (min, max) => min + Math.floor(Math.random() * (m
 // Добавляет 0 к количеству минут < 10
 export const addLeadZero = (units) => units < 10 ? (`0` + units) : units;
 
-export default getRandomNumber;
+// Рендеринг элемента из разметки
+export const createElement = (string) => {
+  const div = document.createElement(`div`);
+  div.innerHTML = string;
+  return div.firstChild;
+};
+
+export default createElement;

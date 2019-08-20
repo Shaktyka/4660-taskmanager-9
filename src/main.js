@@ -10,9 +10,9 @@ import {makeTasksContainer} from './components/tasks-container.js';
 import {makeSortContainer} from './components/sort-container.js';
 import {makeSortElement} from './components/sort-element.js';
 import {makeTaskData} from './task-data.js';
-import {filterData} from './filter-data.js';
-import {getRandomNumber} from './utils.js';
-import {sortFilterArr} from './data.js';
+// import {filterData} from './filter-data.js';
+import {getRandomNumber, createElement} from './utils.js';
+import {sortFilterData, filterData} from './data.js';
 
 // Количество задач
 const TasksAmount = {
@@ -39,23 +39,16 @@ const renderTaskArray = (amount) => {
 
 renderTaskArray(getRandomNumber(10, 30));
 
-// Рендеринг элемента из разметки
-const renderElement = (string) => {
-  const template = document.createElement(`template`);
-  template.innerHTML = string;
-  return template.content;
-};
-
 // Добавляет компонент(ы) в контейнер
 const render = (container, template, amount = 0) => {
   let content = null;
   if (amount) {
     content = new DocumentFragment();
     for (let i = 0; i < amount; i++) {
-      content.appendChild(renderElement(template));
+      content.appendChild(createElement(template));
     }
   } else {
-    content = renderElement(template);
+    content = createElement(template);
   }
   container.appendChild(content);
 };
@@ -82,7 +75,7 @@ const makeSortString = (dataArr) => {
   });
   return sortString;
 };
-render(sortContainer, makeSortString(sortFilterArr));
+render(sortContainer, makeSortString(sortFilterData));
 // + контейнер для тасков
 render(contentContainer, makeTasksContainer());
 const tasksContainer = document.querySelector(`.board__tasks`);

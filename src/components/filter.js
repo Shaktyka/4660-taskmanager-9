@@ -1,14 +1,15 @@
 // Рендерит Фильтр
-export const makeFilter = (data) => {
+export const makeFilter = (title, isActiveFilter = false, amount = 0) => {
   return `<input
       type="radio"
-      id="filter__${data.title}"
+      id="filter__${title}"
       class="filter__input visually-hidden"
       name="filter"
-      disabled
+      ${amount === 0 ? `disabled` : ``}
+      ${isActiveFilter ? `checked` : ``}
     />
-    <label for="filter__${data.title}" class="filter__label">
-      ${data.title} <span class="filter__${data.title}-count">${data.count}</span>
+    <label for="filter__${title}" class="filter__label">
+      ${title} <span class="filter__${title}-count">${amount}</span>
     </label>`.trim();
 };
 

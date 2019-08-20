@@ -8,6 +8,10 @@ export const addLeadZero = (units) => units < 10 ? (`0` + units) : units;
 export const createElement = (string) => {
   const div = document.createElement(`div`);
   div.innerHTML = string;
+  // Для HTML -коллекций
+  if (div.children.length > 1) {
+    return div.children;
+  }
   return div.firstChild;
 };
 

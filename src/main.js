@@ -3,14 +3,13 @@ import {makeLoadMoreBtn} from './components/load-more-btn.js';
 import {makeTask} from './components/task.js';
 import {makeSearch} from './components/search.js';
 import {makeFilter} from './components/filter.js';
-// import {makeSort} from './components/sort.js';
 import {makeTaskEdit} from './components/task-edit.js';
 import {makeBoard} from './components/board.js';
 import {makeTasksContainer} from './components/tasks-container.js';
 import {makeSortContainer} from './components/sort-container.js';
 import {makeSortElement} from './components/sort-element.js';
+import {getFilterContainerTemplate} from './components/filter-container.js'
 import {makeTaskData} from './task-data.js';
-// import {filterData} from './filter-data.js';
 import {getRandomNumber, createElement} from './utils.js';
 import {sortFilterData, filterData} from './data.js';
 
@@ -25,10 +24,6 @@ const mainContainer = document.querySelector(`.main`);
 
 // Все задачи
 const allTasks = [];
-
-const getFilterContainerTemplate = () => {
-  return `<section class="main__filter filter container"></section>`;
-};
 
 // Рендеринг массива с задачами
 const renderTaskArray = (amount) => {
@@ -53,29 +48,35 @@ const render = (container, template, amount = 0) => {
   container.appendChild(content);
 };
 
-// + меню
+// МЕНЮ СТРАНИЦЫ
 render(menuContainer, makeMenu());
-// + форма поиска
+// ФОРМА ПОИСКА
 render(mainContainer, makeSearch());
-// + блок для меню
+
+// ФИЛЬТРЫ
+// + блок для фильтра
 render(mainContainer, getFilterContainerTemplate());
 const filterContainer = mainContainer.querySelector(`.main__filter`);
 
-//render(filterContainer, makeFilter());
+// Рендеринг фильтра
+const renderFilter = (container, dataArr) => {
+  let fragment = new DocumentFragment();
+  dataArr.forEach((dataEl) => {
+    const isActiveFilter = dataEl === `All`;
+    const amount = getRandomNumber(0, 15);
+    const elements = createElement(makeFilter(dataEl, isActiveFilter, amount));
+    Array.from(elements).forEach((el) => {
+      fragment.appendChild(el);
+    });
+  });
+  container.appendChild(fragment);
+};
+
+renderFilter(filterContainer, filterData);
+
 // + блок для контента
 render(mainContainer, makeBoard());
 const contentContainer = document.querySelector(`.board`);
-
-// Склеим строку из элементов
-// const makeSortString = (dataArr) => {
-//   let sortString = ``;
-//   dataArr.forEach((el) => {
-//     sortString += makeSortElement(el);
-//   });
-//   return sortString;
-// };
-// render(sortContainer, makeSortString(sortFilterData));
-// + контейнер для тасков
 
 // СОРТИРОВКА
 // Рендеринт sort фильтра
@@ -91,6 +92,7 @@ render(contentContainer, makeSortContainer());
 const sortContainer = contentContainer.querySelector(`.board__filter-list`);
 renderSortFilter(sortContainer, sortFilterData);
 
+// Контенйнер для карточек
 render(contentContainer, makeTasksContainer());
 const tasksContainer = document.querySelector(`.board__tasks`);
 // Рендерим карточки

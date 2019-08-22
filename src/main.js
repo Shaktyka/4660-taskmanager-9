@@ -22,6 +22,9 @@ const TasksAmount = {
 const menuContainer = document.querySelector(`.main__control`);
 const mainContainer = document.querySelector(`.main`);
 
+// Текст, когда в списке нет задач
+const noTaskText = `Click ADD NEW TASK in menu to create your first task`;
+
 // Рендеринг массива с задачами
 const allTasks = [];
 const renderTaskArray = (amount) => {
@@ -55,12 +58,46 @@ render(mainContainer, makeSearch());
 render(mainContainer, getFilterContainerTemplate());
 const filterContainer = mainContainer.querySelector(`.main__filter`);
 
+// Фильтрация массива данных карточек по названию фильтра
+const getFilteredTasksAmount = (dataArr, filterName) => {
+  let filteredArr = [];
+
+  switch (filterName) {
+    case `All`:
+      filteredArr = dataArr;
+      break;
+    case `Overdue`:
+      filteredArr = dataArr.filter((obj) => obj.isFavorite);
+      break;
+    case `Today`:
+      filteredArr = dataArr.filter((obj) => obj.isFavorite);
+      break;
+    case `Favorites`:
+      filteredArr = dataArr.filter((obj) => obj.isFavorite);
+      break;
+    case `Repeating`:
+      filteredArr = dataArr.filter((obj) => obj.isFavorite);
+      break;
+    case `Tags`:
+      filteredArr = dataArr.filter((obj) => obj.isFavorite);
+      break;
+    case `Archive`:
+      filteredArr = dataArr.filter((obj) => obj.isArchive);
+      break;
+    default:
+      break;
+  }
+
+  return filteredArr.length;
+};
+
 // Рендеринг фильтра
 const renderFilter = (container, dataArr) => {
   let fragment = new DocumentFragment();
   dataArr.forEach((dataObj) => {
     const isActiveFilter = dataObj.title === `All`;
-    const elements = createElement(makeFilter(dataObj, isActiveFilter));
+    const amount = getFilteredTasksAmount(allTasks, dataObj.title);
+    const elements = createElement(makeFilter(dataObj, amount, isActiveFilter));
     Array.from(elements).forEach((el) => {
       fragment.appendChild(el);
     });

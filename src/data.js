@@ -20,31 +20,31 @@ export const sortFilterData = [
 export const filterData = [
   {
     title: `All`,
-    count: getRandomNumber(0, 50)
+    count: 0
   },
   {
     title: `Overdue`,
-    count: getRandomNumber(0, 20)
+    count: 0
   },
   {
     title: `Today`,
-    count: getRandomNumber(0, 20)
+    count: 0
   },
   {
     title: `Favorites`,
-    count: getRandomNumber(0, 20)
+    count: 0
   },
   {
     title: `Repeating`,
-    count: getRandomNumber(0, 20)
+    count: 0
   },
   {
     title: `Tags`,
-    count: getRandomNumber(0, 20)
+    count: 0
   },
   {
     title: `Archive`,
-    count: getRandomNumber(0, 50)
+    count: 0
   }
 ];
 

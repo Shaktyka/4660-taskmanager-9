@@ -58,6 +58,9 @@ render(mainContainer, makeSearch());
 render(mainContainer, getFilterContainerTemplate());
 const filterContainer = mainContainer.querySelector(`.main__filter`);
 
+// Ф-ция для выявления просроченной даты
+// const getOverdueDate = (timestamp) => new Date(timestamp) < Date.now();
+
 // Фильтрация массива данных карточек по названию фильтра
 const getFilteredTasksAmount = (dataArr, filterName) => {
   let filteredArr = [];
@@ -67,7 +70,7 @@ const getFilteredTasksAmount = (dataArr, filterName) => {
       filteredArr = dataArr;
       break;
     case `Overdue`:
-      filteredArr = dataArr.filter((obj) => obj.isFavorite);
+      filteredArr = dataArr.filter((obj) => new Date(obj.dueDate) < Date.now());
       break;
     case `Today`:
       filteredArr = dataArr.filter((obj) => obj.isFavorite);

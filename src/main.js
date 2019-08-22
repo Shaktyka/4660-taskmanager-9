@@ -61,6 +61,14 @@ const filterContainer = mainContainer.querySelector(`.main__filter`);
 // Ф-ция для выявления просроченной даты
 // const getOverdueDate = (timestamp) => new Date(timestamp) < Date.now();
 
+const checkTodayDeadline = (timestamp) => {
+  const today = `${new Date().getDate()} ${new Date().getMonth() + 1} ${new Date().getFullYear()}`;
+
+  return today;
+};
+
+checkTodayDeadline(getRandomNumber(Date.now() - 1000000, Date.now() + 1000000000));
+
 // Фильтрация массива данных карточек по названию фильтра
 const getFilteredTasksAmount = (dataArr, filterName) => {
   let filteredArr = [];

@@ -45,7 +45,7 @@ export const makeTask = ({ description, dueDate, repeatingDays, tags, color, isF
                       </div>
                     </div>
 
-                    <div class="card__hashtag">
+                    ${tags.size > 0 ? `<div class="card__hashtag">
                       <div class="card__hashtag-list">
                         ${Array.from(tags).map((tag) => `<span class="card__hashtag-inner">
                           <span class="card__hashtag-name">
@@ -53,7 +53,7 @@ export const makeTask = ({ description, dueDate, repeatingDays, tags, color, isF
                           </span>
                         </span>`).join(``)}
                       </div>
-                    </div>
+                    </div>` : ``}
                   </div>
                 </div>
               </div>

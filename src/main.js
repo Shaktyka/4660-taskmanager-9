@@ -23,6 +23,7 @@ const TasksAmount = {
 const menuContainer = document.querySelector(`.main__control`);
 const mainContainer = document.querySelector(`.main`);
 const tasksArray = [];
+const copiedTasksArray = [];
 
 // Когда в списке нет задач
 const TextNoTasks = {
@@ -36,7 +37,8 @@ const renderTaskArray = (amount) => {
     tasksArray.push(makeTaskData());
   }
 };
-renderTaskArray(getRandomNumber(10, 40));
+renderTaskArray(getRandomNumber(5, 10));
+copiedTasksArray = tasksArray.slice(); // Копия массива с карточками для вырезания
 
 // Рендеринг элементов в контейнер
 const render = (container, element, amount) => {
@@ -173,9 +175,11 @@ const renderStartContent = (container, tasksArr) => {
     renderTasks(tasksContainer, tasksArray.slice(1, TasksAmount.START_REST + 1));
 
     // Рендерим кнопку "LoadMore"
-    render(contentContainer, createElement(makeLoadMoreBtn()));
-    const loadMoreBtn = contentContainer.querySelector(`.load-more`);
-    loadMoreBtn.addEventListener(`click`, onLoadMoreBtnClick);
+    if (tasksArray.length > TasksAmount.START) {
+      render(contentContainer, createElement(makeLoadMoreBtn()));
+      const loadMoreBtn = contentContainer.querySelector(`.load-more`);
+      loadMoreBtn.addEventListener(`click`, onLoadMoreBtnClick);
+    }
   }
 };
 

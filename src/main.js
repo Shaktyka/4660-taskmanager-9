@@ -16,51 +16,54 @@ import {sortFilterData, filterData} from './data.js';
 // Количество задач
 const TasksAmount = {
   START: 8,
-  STEP: 8
+  STEP: 8,
+  START_REST: 7
 };
 
 const menuContainer = document.querySelector(`.main__control`);
 const mainContainer = document.querySelector(`.main`);
+const tasksArray = [];
 
-// Текст, когда в списке нет задач
-const noTaskText = `Click ADD NEW TASK in menu to create your first task`;
+// Когда в списке нет задач
+const TextNoTasks = {
+  ONLY_ARCHIVED: `<p class="board__no-tasks">Click ADD NEW TASK in menu to create your first task</p>`,
+  AT_ALL: `<p class="board__no-tasks">Click ADD NEW TASK in menu to create your first task</p>`
+};
 
 // Рендеринг массива с задачами
-const allTasks = [];
 const renderTaskArray = (amount) => {
   for (let i = 0; i < amount; i++) {
-    allTasks.push(makeTaskData());
+    tasksArray.push(makeTaskData());
   }
 };
-renderTaskArray(getRandomNumber(10, 40));
+// renderTaskArray(getRandomNumber(10, 40));
 
-// Добавляет компонент(ы) в контейнер
-const render = (container, template, amount = 0) => {
-  let content = null;
+// Рендеринг элементов в контейнер
+const render = (container, element, amount) => {
+  let content = element;
   if (amount) {
     content = new DocumentFragment();
     for (let i = 0; i < amount; i++) {
-      content.appendChild(createElement(template));
+      content.appendChild(element);
     }
-  } else {
-    content = createElement(template);
   }
   container.appendChild(content);
 };
 
 // МЕНЮ СТРАНИЦЫ
-render(menuContainer, makeMenu());
+render(menuContainer, createElement(makeMenu()));
 // ФОРМА ПОИСКА
-render(mainContainer, makeSearch());
+render(mainContainer, createElement(makeSearch()));
 
 // ФИЛЬТРЫ
 // + блок для фильтра
-render(mainContainer, getFilterContainerTemplate());
+render(mainContainer, createElement(getFilterContainerTemplate()));
 const filterContainer = mainContainer.querySelector(`.main__filter`);
 
 // Ф-ция для выявления просроченной даты
 // const getOverdueDate = (timestamp) => new Date(timestamp) < Date.now();
 
+// Выявление просроченного дедлайна
 const checkTodayDeadline = (timestamp) => {
   const today = `${new Date().getDate()} ${new Date().getMonth() + 1} ${new Date().getFullYear()}`;
 
@@ -107,7 +110,7 @@ const renderFilter = (container, dataArr) => {
   let fragment = new DocumentFragment();
   dataArr.forEach((dataObj) => {
     const isActiveFilter = dataObj.title === `All`;
-    const amount = getFilteredTasksAmount(allTasks, dataObj.title);
+    const amount = getFilteredTasksAmount(tasksArray, dataObj.title);
     const elements = createElement(makeFilter(dataObj, amount, isActiveFilter));
     Array.from(elements).forEach((el) => {
       fragment.appendChild(el);
@@ -119,46 +122,22 @@ const renderFilter = (container, dataArr) => {
 renderFilter(filterContainer, filterData);
 
 // КОНТЕНТ
-render(mainContainer, makeBoard());
+render(mainContainer, createElement(makeBoard()));
 const contentContainer = document.querySelector(`.board`);
 
-// СОРТИРОВКА
-// Рендеринт sort фильтра
-const renderSortFilter = (container, dataArr) => {
-  let fragment = new DocumentFragment();
-  dataArr.forEach((dataEl) => {
-    const el = createElement(makeSortElement(dataEl));
-    fragment.appendChild(el);
-  });
-  container.appendChild(fragment);
-};
-render(contentContainer, makeSortContainer());
-const sortContainer = contentContainer.querySelector(`.board__filter-list`);
-renderSortFilter(sortContainer, sortFilterData);
 
-// Контейнер для карточек
-render(contentContainer, makeTasksContainer());
-const tasksContainer = document.querySelector(`.board__tasks`);
-// Рендерим карточки
-// console.log(allTasks[0]);
-  render(tasksContainer, makeTaskEdit(allTasks[0]));
-// Рендеринг карточек
+// ТЕПЕРЬ НАМ НАДО ОТРИОСВАТЬ КОНТЕНТ В ЗАВ-ТИ ОТ ДАННЫХ
 
-const renderTasks = (tasksContainer, dataArr) => {
-  
-  
+// Рендеринг стартового контента
+const renderStartContent = (container, tasksArr) => {
+  if (tasksArr.length === 0) {
+    container.appendChild(createElement(TextNoTasks.AT_ALL));
+  } else {
+    console.log(`Массив карточек не пустой`);
+    // Рендерим sort-фильтр
+    // Рендерим карточки
+  }
 };
 
-render(tasksContainer, makeTask(makeTaskData()));
-
-// Кнопка "Load More"
-render(contentContainer, makeLoadMoreBtn());
-const loadMoreBtn = contentContainer.querySelector(`.load-more`);
-
-// Обработчик нажатия на кнопку "Load More"
-const onLoadMoreBtnClick = (evt) => {
-  evt.preventDefault();
-  // Добавление в контейнер ещё карточек из массива
-};
-
-loadMoreBtn.addEventListener(`click`, onLoadMoreBtnClick);
+// Стартовый рендеринг контента
+renderStartContent(contentContainer, tasksArray);

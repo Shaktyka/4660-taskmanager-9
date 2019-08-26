@@ -136,6 +136,17 @@ const onLoadMoreBtnClick = (evt) => {
   // Добавление в контейнер ещё карточек из массива
 };
 
+// Рендеринг ещё 7 тасков
+const renderTasks = (container, tasksArr) => {
+  let fragment = new DocumentFragment();
+  tasksArr.forEach((taskEl) => {
+    const el = createElement(makeTask(taskEl));
+    fragment.appendChild(el);
+  });
+  container.appendChild(fragment);
+  // console.log(tasksArr);
+};
+
 // Рендеринг стартового контента
 const renderStartContent = (container, tasksArr) => {
   if (tasksArr.length === 0) {
@@ -158,7 +169,8 @@ const renderStartContent = (container, tasksArr) => {
     // Рендерим карточку Edit
     render(tasksContainer, createElement(makeTaskEdit(tasksArray[0])));
     // Рендерим остальные карточки
-    render(tasksContainer, createElement(makeTask(makeTaskData())));
+    // render(tasksContainer, createElement(makeTask(makeTaskData())));
+    renderTasks(tasksContainer, tasksArray.slice(1, TasksAmount.START_REST + 1));
 
     // Рендерим кнопку "LoadMore"
     render(contentContainer, createElement(makeLoadMoreBtn()));

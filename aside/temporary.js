@@ -11,7 +11,3 @@ const render = (container, template, amount = 0) => {
   }
   container.appendChild(content);
 };
-
-const renderTasks = (tasksContainer, dataArr) => {
-
-};

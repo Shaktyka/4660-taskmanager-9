@@ -23,7 +23,7 @@ const TasksAmount = {
 const menuContainer = document.querySelector(`.main__control`);
 const mainContainer = document.querySelector(`.main`);
 const tasksArray = [];
-const copiedTasksArray = [];
+let copiedTasksArray = [];
 
 // Когда в списке нет задач
 const TextNoTasks = {

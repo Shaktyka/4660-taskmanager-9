@@ -20,4 +20,7 @@ export const hasRepeatingDays = (object) => {
   return Object.keys(object).some((day) => day);
 };
 
+// Просроченные задачи
+// new Date(obj.dueDate) < Date.now()
+
 export default createElement;

@@ -4,9 +4,9 @@ import {addLeadZero} from '../utils.js';
 const months = [`January`, `February`, `March`, `April`, `May`, `June`, `July`, `August`, `September`, `October`, `November`, `December`];
 
 // Возвращает карточку задания
-export const makeTask = ({ description, dueDate, repeatingDays, tags, color, isFavorite, isArchive }) => {
+export const makeTask = ({description, dueDate, repeatingDays, tags, color, isFavorite, isArchive}) => {
   const date = new Date(dueDate);
-  return `<article class="card card--${color} ${Object.keys(repeatingDays).some(day => repeatingDays[day]) ? `card--repeat`: ``}">
+  return `<article class="card card--${color} ${Object.keys(repeatingDays).some((day) => repeatingDays[day]) ? `card--repeat` : ``} ${new Date(dueDate) < Date.now() ? `card--deadline` : ``}">
             <div class="card__form">
               <div class="card__inner">
                 <div class="card__control">
@@ -36,14 +36,14 @@ export const makeTask = ({ description, dueDate, repeatingDays, tags, color, isF
 
                 <div class="card__settings">
                   <div class="card__details">
-                    <div class="card__dates">
+                    ${dueDate ? `<div class="card__dates">
                       <div class="card__date-deadline">
                         <p class="card__input-deadline-wrap">
                           <span class="card__date">${date.getDate()} ${months[date.getMonth()]}</span>
                           <span class="card__time">${addLeadZero(date.getHours())}:${addLeadZero(date.getMinutes())} ${date.getHours() >= 12 ? `PM` : `AM`}</span>
                         </p>
                       </div>
-                    </div>
+                    </div>` : ``}
 
                     ${tags.size > 0 ? `<div class="card__hashtag">
                       <div class="card__hashtag-list">

@@ -64,13 +64,9 @@ const filterContainer = mainContainer.querySelector(`.main__filter`);
 // const getOverdueDate = (timestamp) => new Date(timestamp) < Date.now();
 
 // Выявление просроченного дедлайна
-const checkTodayDeadline = (timestamp) => {
-  const today = `${new Date().getDate()} ${new Date().getMonth() + 1} ${new Date().getFullYear()}`;
-
-  return today;
+const getTaskFormatDate = (date) => {
+  return `${date.getDate()} ${date.getMonth() + 1} ${date.getFullYear()}`;
 };
-
-checkTodayDeadline(getRandomNumber(Date.now() - 1000000, Date.now() + 1000000000));
 
 // Фильтрация массива данных карточек по названию фильтра
 const getFilteredTasksAmount = (dataArr, filterName) => {
@@ -84,7 +80,7 @@ const getFilteredTasksAmount = (dataArr, filterName) => {
       filteredArr = dataArr.filter((obj) => new Date(obj.dueDate) < Date.now());
       break;
     case `Today`:
-      filteredArr = dataArr.filter((obj) => obj.isFavorite);
+      filteredArr = dataArr.filter((obj) => getTaskFormatDate(new Date(obj.dueDate)) === getTaskFormatDate(new Date()));
       break;
     case `Favorites`:
       filteredArr = dataArr.filter((obj) => obj.isFavorite);
@@ -149,6 +145,7 @@ const renderStartContent = (container, tasksArr) => {
     // Рендерим текст, что карточек нет
     container.appendChild(createElement(TextNoTasks.AT_ALL));
   } else if (tasksArr.length === document.querySelector(`.filter__archive-count`).textContent) {
+    // Рендерим спец. строку, когда, кроме архивных, задач нет
     container.appendChild(createElement(TextNoTasks.ONLY_ARCHIVED));
   } else {
     // chechIsOnlyArchivedTasks();

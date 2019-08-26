@@ -15,4 +15,9 @@ export const createElement = (string) => {
   return div.firstChild;
 };
 
+// Выявление повторяющихся задач
+export const hasRepeatingDays = (object) => {
+  return Object.keys(object).some((day) => day);
+};
+
 export default createElement;

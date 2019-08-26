@@ -60,9 +60,6 @@ render(mainContainer, createElement(makeSearch()));
 render(mainContainer, createElement(getFilterContainerTemplate()));
 const filterContainer = mainContainer.querySelector(`.main__filter`);
 
-// Ф-ция для выявления просроченной даты
-// const getOverdueDate = (timestamp) => new Date(timestamp) < Date.now();
-
 // Выявление просроченного дедлайна
 const getTaskFormatDate = (date) => {
   return `${date.getDate()} ${date.getMonth() + 1} ${date.getFullYear()}`;
@@ -86,10 +83,10 @@ const getFilteredTasksAmount = (dataArr, filterName) => {
       filteredArr = dataArr.filter((obj) => obj.isFavorite);
       break;
     case `Repeating`:
-      filteredArr = dataArr.filter((obj) => obj.isFavorite);
+      filteredArr = dataArr.filter((obj) => Object.keys(obj.repeatingDays).some((day) => day));
       break;
     case `Tags`:
-      filteredArr = dataArr.filter((obj) => obj.isFavorite);
+      filteredArr = dataArr.filter((obj) => obj.tags.size > 0);
       break;
     case `Archive`:
       filteredArr = dataArr.filter((obj) => obj.isArchive);

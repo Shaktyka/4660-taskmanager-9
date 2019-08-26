@@ -36,7 +36,7 @@ const renderTaskArray = (amount) => {
     tasksArray.push(makeTaskData());
   }
 };
-// renderTaskArray(getRandomNumber(10, 40));
+renderTaskArray(getRandomNumber(10, 40));
 
 // Рендеринг элементов в контейнер
 const render = (container, element, amount) => {
@@ -125,17 +125,49 @@ renderFilter(filterContainer, filterData);
 render(mainContainer, createElement(makeBoard()));
 const contentContainer = document.querySelector(`.board`);
 
+// Рендеринт sort фильтра
+const renderSortFilter = (container, dataArr) => {
+  let fragment = new DocumentFragment();
+  dataArr.forEach((dataEl) => {
+    const el = createElement(makeSortElement(dataEl));
+    fragment.appendChild(el);
+  });
+  container.appendChild(fragment);
+};
 
 // ТЕПЕРЬ НАМ НАДО ОТРИОСВАТЬ КОНТЕНТ В ЗАВ-ТИ ОТ ДАННЫХ
+
+// Обработчик нажатия на кнопку "Load More"
+const onLoadMoreBtnClick = (evt) => {
+  evt.preventDefault();
+  // Добавление в контейнер ещё карточек из массива
+};
 
 // Рендеринг стартового контента
 const renderStartContent = (container, tasksArr) => {
   if (tasksArr.length === 0) {
     container.appendChild(createElement(TextNoTasks.AT_ALL));
   } else {
-    console.log(`Массив карточек не пустой`);
+
     // Рендерим sort-фильтр
+    render(contentContainer, createElement(makeSortContainer()));
+    const sortContainer = contentContainer.querySelector(`.board__filter-list`);
+    renderSortFilter(sortContainer, sortFilterData);
+
     // Рендерим карточки
+    // Контейнер для карточек
+    render(contentContainer, createElement(makeTasksContainer()));
+    const tasksContainer = document.querySelector(`.board__tasks`);
+
+    // Рендерим карточку Edit
+    render(tasksContainer, createElement(makeTaskEdit(tasksArray[0])));
+    // Рендерим остальные карточки
+    render(tasksContainer, createElement(makeTask(makeTaskData())));
+
+    // Рендерим кнопку "LoadMore"
+    render(contentContainer, createElement(makeLoadMoreBtn()));
+    const loadMoreBtn = contentContainer.querySelector(`.load-more`);
+    loadMoreBtn.addEventListener(`click`, onLoadMoreBtnClick);
   }
 };
 

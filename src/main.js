@@ -135,7 +135,7 @@ const renderSortFilter = (container, dataArr) => {
   container.appendChild(fragment);
 };
 
-// ТЕПЕРЬ НАМ НАДО ОТРИОСВАТЬ КОНТЕНТ В ЗАВ-ТИ ОТ ДАННЫХ
+// ТЕПЕРЬ НАМ НАДО ОТРИСОВАТЬ КОНТЕНТ В ЗАВ-ТИ ОТ ДАННЫХ
 
 // Обработчик нажатия на кнопку "Load More"
 const onLoadMoreBtnClick = (evt) => {
@@ -146,15 +146,17 @@ const onLoadMoreBtnClick = (evt) => {
 // Рендеринг стартового контента
 const renderStartContent = (container, tasksArr) => {
   if (tasksArr.length === 0) {
+    // Рендерим текст, что карточек нет
     container.appendChild(createElement(TextNoTasks.AT_ALL));
+  } else if (tasksArr.length === document.querySelector(`.filter__archive-count`).textContent) {
+    container.appendChild(createElement(TextNoTasks.ONLY_ARCHIVED));
   } else {
-
+    // chechIsOnlyArchivedTasks();
     // Рендерим sort-фильтр
     render(contentContainer, createElement(makeSortContainer()));
     const sortContainer = contentContainer.querySelector(`.board__filter-list`);
     renderSortFilter(sortContainer, sortFilterData);
 
-    // Рендерим карточки
     // Контейнер для карточек
     render(contentContainer, createElement(makeTasksContainer()));
     const tasksContainer = document.querySelector(`.board__tasks`);

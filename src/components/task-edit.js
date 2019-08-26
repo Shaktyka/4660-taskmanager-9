@@ -3,23 +3,25 @@ import {addLeadZero} from '../utils.js';
 // Массив названий месяцов года
 const months = [`January`, `February`, `March`, `April`, `May`, `June`, `July`, `August`, `September`, `October`, `November`, `December`];
 
-// Возвращает карточку с формой создания задачи
-export const makeTaskEdit = ({description, dueDate, repeatingDays, tags, color}) => {
-  const date = new Date(dueDate);
+// Возвращает AM или PM
+const getAMPM = (date) => {
+  return date.getHours() > 0 && date.getHours() < 12 ? `AM` : `PM`;
+};
 
-  // console.log(tags.size);
-  // 
-  return `<article class="card card--edit card--${color} ${Object.keys(repeatingDays).some(day => repeatingDays[day]) ? `card--repeat`: ``}">
+// Возвращает карточку с формой создания задачи
+export const makeTaskEdit = ({description, dueDate, repeatingDays, tags, color, isArchive, isFavorite}) => {
+  // console.log(repeatingDays);
+  const date = new Date(dueDate);
+  const repeatingTask = Object.keys(repeatingDays).some((day) => repeatingDays[day]);
+
+  return `<article class="card card--edit card--${color} ${repeatingTask ? `card--repeat` : ``}">
             <form class="card__form" method="get">
               <div class="card__inner">
                 <div class="card__control">
-                  <button type="button" class="card__btn card__btn--archive">
+                  <button type="button" class="card__btn card__btn--archive ${isArchive ? `card__btn--disabled` : ``}">
                     archive
                   </button>
-                  <button
-                    type="button"
-                    class="card__btn card__btn--favorites card__btn--disabled"
-                  >
+                  <button type="button" class="card__btn card__btn--favorites ${isFavorite ? `card__btn--disabled` : ``}">
                     favorites
                   </button>
                 </div>
@@ -44,25 +46,26 @@ export const makeTaskEdit = ({description, dueDate, repeatingDays, tags, color})
                   <div class="card__details">
                     <div class="card__dates">
                       <button class="card__date-deadline-toggle" type="button">
-                        date: <span class="card__date-status">${date.getDate() ? (date.getDate() + ` ` + months[date.getMonth()]) : `no`}</span>
+                        date: <span class="card__date-status">${dueDate ? `no` : `no`}</span>
                       </button>
 
-                      <fieldset class="card__date-deadline" disabled>
+                      <fieldset class="card__date-deadline" ${dueDate ? `` : `disabled`}>
                         <label class="card__input-deadline-wrap">
                           <input
                             class="card__date"
                             type="text"
                             placeholder="23 September"
                             name="date"
+                            value="${date.getDate() ? (date.getDate() + ` ` + months[date.getMonth()] + ` ` + addLeadZero(date.getHours()) + `:` + addLeadZero(date.getMinutes()) + ` ` + getAMPM(date)) : ``}"
                           />
                         </label>
                       </fieldset>
 
                       <button class="card__repeat-toggle" type="button">
-                        repeat:<span class="card__repeat-status">no</span>
+                        repeat:<span class="card__repeat-status">${repeatingTask ? `yes` : `no`}</span>
                       </button>
 
-                      <fieldset class="card__repeat-days" ${Object.keys(repeatingDays).some(day => repeatingDays[day]) ? ``: `disabled`}>
+                      <fieldset class="card__repeat-days" ${repeatingTask ? `` : `disabled`}>
                         <div class="card__repeat-days-inner">
                           <input
                             class="visually-hidden card__repeat-day-input"
@@ -70,6 +73,7 @@ export const makeTaskEdit = ({description, dueDate, repeatingDays, tags, color})
                             id="repeat-mo-1"
                             name="repeat"
                             value="mo"
+                            ${repeatingDays[`mo`] ? `checked` : ``}
                           />
                           <label class="card__repeat-day" for="repeat-mo-1"
                             >mo</label
@@ -80,7 +84,7 @@ export const makeTaskEdit = ({description, dueDate, repeatingDays, tags, color})
                             id="repeat-tu-1"
                             name="repeat"
                             value="tu"
-                            checked
+                            ${repeatingDays[`tu`] ? `checked` : ``}
                           />
                           <label class="card__repeat-day" for="repeat-tu-1"
                             >tu</label
@@ -91,6 +95,7 @@ export const makeTaskEdit = ({description, dueDate, repeatingDays, tags, color})
                             id="repeat-we-1"
                             name="repeat"
                             value="we"
+                            ${repeatingDays[`we`] ? `checked` : ``}
                           />
                           <label class="card__repeat-day" for="repeat-we-1"
                             >we</label
@@ -101,6 +106,7 @@ export const makeTaskEdit = ({description, dueDate, repeatingDays, tags, color})
                             id="repeat-th-1"
                             name="repeat"
                             value="th"
+                            ${repeatingDays[`th`] ? `checked` : ``}
                           />
                           <label class="card__repeat-day" for="repeat-th-1"
                             >th</label
@@ -111,7 +117,7 @@ export const makeTaskEdit = ({description, dueDate, repeatingDays, tags, color})
                             id="repeat-fr-1"
                             name="repeat"
                             value="fr"
-                            checked
+                            ${repeatingDays[`fr`] ? `checked` : ``}
                           />
                           <label class="card__repeat-day" for="repeat-fr-1"
                             >fr</label
@@ -122,6 +128,7 @@ export const makeTaskEdit = ({description, dueDate, repeatingDays, tags, color})
                             name="repeat"
                             value="sa"
                             id="repeat-sa-1"
+                            ${repeatingDays[`sa`] ? `checked` : ``}
                           />
                           <label class="card__repeat-day" for="repeat-sa-1"
                             >sa</label
@@ -132,7 +139,7 @@ export const makeTaskEdit = ({description, dueDate, repeatingDays, tags, color})
                             id="repeat-su-1"
                             name="repeat"
                             value="su"
-                            checked
+                            ${repeatingDays[`su`] ? `checked` : ``}
                           />
                           <label class="card__repeat-day" for="repeat-su-1"
                             >su</label
@@ -142,7 +149,13 @@ export const makeTaskEdit = ({description, dueDate, repeatingDays, tags, color})
                     </div>
 
                     <div class="card__hashtag">
-                      <div class="card__hashtag-list">${tags.size ? tags : ``}</div>
+                      <div class="card__hashtag-list">
+                        ${Array.from(tags).map((tag) => `<span class="card__hashtag-inner">
+                          <span class="card__hashtag-name">
+                            #${tag}
+                          </span>
+                        </span>`).join(``)}
+                      </div>
 
                       <label>
                         <input
@@ -152,6 +165,7 @@ export const makeTaskEdit = ({description, dueDate, repeatingDays, tags, color})
                           placeholder="Type new hashtag here"
                         />
                       </label>
+
                     </div>
                   </div>
 
@@ -164,7 +178,7 @@ export const makeTaskEdit = ({description, dueDate, repeatingDays, tags, color})
                         class="card__color-input card__color-input--black visually-hidden"
                         name="color"
                         value="black"
-                        checked
+                        ${color === `black` ? `checked` : ``}
                       />
                       <label
                         for="color-black-1"
@@ -177,6 +191,7 @@ export const makeTaskEdit = ({description, dueDate, repeatingDays, tags, color})
                         class="card__color-input card__color-input--yellow visually-hidden"
                         name="color"
                         value="yellow"
+                        ${color === `yellow` ? `checked` : ``}
                       />
                       <label
                         for="color-yellow-1"
@@ -189,6 +204,7 @@ export const makeTaskEdit = ({description, dueDate, repeatingDays, tags, color})
                         class="card__color-input card__color-input--blue visually-hidden"
                         name="color"
                         value="blue"
+                        ${color === `blue` ? `checked` : ``}
                       />
                       <label
                         for="color-blue-1"
@@ -201,6 +217,7 @@ export const makeTaskEdit = ({description, dueDate, repeatingDays, tags, color})
                         class="card__color-input card__color-input--green visually-hidden"
                         name="color"
                         value="green"
+                        ${color === `green` ? `checked` : ``}
                       />
                       <label
                         for="color-green-1"
@@ -213,6 +230,7 @@ export const makeTaskEdit = ({description, dueDate, repeatingDays, tags, color})
                         class="card__color-input card__color-input--pink visually-hidden"
                         name="color"
                         value="pink"
+                        ${color === `pink` ? `checked` : ``}
                       />
                       <label
                         for="color-pink-1"
@@ -230,4 +248,4 @@ export const makeTaskEdit = ({description, dueDate, repeatingDays, tags, color})
               </div>
             </form>
     </article>`.trim();
-}; 
+};

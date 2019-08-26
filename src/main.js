@@ -37,7 +37,7 @@ const renderTaskArray = (amount) => {
     tasksArray.push(makeTaskData());
   }
 };
-renderTaskArray(getRandomNumber(5, 10));
+renderTaskArray(getRandomNumber(5, 20));
 copiedTasksArray = tasksArray.slice(); // Копия массива с карточками для вырезания
 
 // Рендеринг элементов в контейнер

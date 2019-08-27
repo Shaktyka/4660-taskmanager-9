@@ -3,7 +3,7 @@ import {getRandomNumber} from './utils.js';
 // Миллисекунд за неделю
 const WEEK_SECONDS = 7 * 24 * 3600 * 1000;
 
-// Задачи 
+// Задачи
 const descriptions = [
   `Пересмотреть лекцию`,
   `Сделать домашку`,
@@ -66,5 +66,5 @@ export const makeTaskData = () => {
     color: colors[getRandomNumber(0, colors.length - 1)],
     isFavorite: getBoolean(),
     isArchive: getBoolean()
-  }
+  };
 };

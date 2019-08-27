@@ -8,7 +8,7 @@ import {makeBoard} from './components/board.js';
 import {makeTasksContainer} from './components/tasks-container.js';
 import {makeSortContainer} from './components/sort-container.js';
 import {makeSortElement} from './components/sort-element.js';
-import {getFilterContainerTemplate} from './components/filter-container.js'
+import {getFilterContainerTemplate} from './components/filter-container.js';
 import {makeTaskData} from './task-data.js';
 import {getRandomNumber, createElement} from './utils.js';
 import {sortFilterData, filterData} from './data.js';
@@ -23,7 +23,7 @@ const TasksAmount = {
 const menuContainer = document.querySelector(`.main__control`);
 const mainContainer = document.querySelector(`.main`);
 const tasksArray = [];
-let copiedTasksArray = [];
+// let copiedTasksArray = [];
 
 // Когда в списке нет задач
 const TextNoTasks = {
@@ -38,7 +38,7 @@ const renderTaskArray = (amount) => {
   }
 };
 renderTaskArray(getRandomNumber(5, 20));
-copiedTasksArray = tasksArray.slice(); // Копия массива с карточками для вырезания
+// copiedTasksArray = tasksArray.slice(); // Копия массива с карточками для вырезания
 
 // Рендеринг элементов в контейнер
 const render = (container, element, amount) => {

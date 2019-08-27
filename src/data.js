@@ -1,18 +1,16 @@
-import {getRandomNumber} from './utils.js';
-
 // Данные для sorting фильтра
 export const sortFilterData = [
   {
-  	href: `#`,
-  	title: `DEFAULT`
+    href: `#`,
+    title: `DEFAULT`
   },
   {
-  	href: `#`,
-  	title: `DATE up`
+    href: `#`,
+    title: `DATE up`
   },
   {
-  	href: `#`,
-  	title: `DATE down`
+    href: `#`,
+    title: `DATE down`
   }
 ];
 
@@ -47,13 +45,3 @@ export const filterData = [
     count: 0
   }
 ];
-
-// export const filterData = [
-//   `All`,
-//   `Overdue`,
-//   `Today`,
-//   `Favorites`,
-//   `Repeating`,
-//   `Tags`,
-//   `Archive`
-// ];

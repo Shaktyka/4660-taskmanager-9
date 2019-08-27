@@ -4,7 +4,7 @@ import {Task} from './components/task.js';
 import {makeSearch} from './components/search.js';
 import {makeFilter} from './components/filter.js';
 import {makeTaskEdit} from './components/task-edit.js';
-import {makeBoard} from './components/board.js';
+import {Board} from './components/board.js';
 import {makeTasksContainer} from './components/tasks-container.js';
 import {makeSortContainer} from './components/sort-container.js';
 import {makeSortElement} from './components/sort-element.js';
@@ -117,7 +117,7 @@ const renderFilter = (container, dataArr) => {
 renderFilter(filterContainer, filterData);
 
 // КОНТЕНТ
-render(mainContainer, createElement(makeBoard()));
+render(mainContainer, new Board().getElement());
 const contentContainer = document.querySelector(`.board`);
 
 // Рендеринт sort фильтра

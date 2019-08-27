@@ -8,7 +8,7 @@ import {Board} from './components/board.js';
 import {makeTasksContainer} from './components/tasks-container.js';
 import {makeSortContainer} from './components/sort-container.js';
 import {makeSortElement} from './components/sort-element.js';
-import {getFilterContainerTemplate} from './components/filter-container.js';
+import {FilterContainer} from './components/filter-container.js';
 import {makeTaskData} from './task-data.js';
 import {getRandomNumber, createElement} from './utils.js';
 import {sortFilterData, filterData} from './data.js';
@@ -59,7 +59,7 @@ render(mainContainer, createElement(makeSearch()));
 
 // ФИЛЬТРЫ
 // + блок для фильтра
-render(mainContainer, createElement(getFilterContainerTemplate()));
+render(mainContainer, new FilterContainer().getElement());
 const filterContainer = mainContainer.querySelector(`.main__filter`);
 
 // Выявление просроченного дедлайна

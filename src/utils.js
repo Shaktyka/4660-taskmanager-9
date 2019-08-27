@@ -23,6 +23,10 @@ export const hasRepeatingDays = (object) => {
   return Object.keys(object).some((day) => day);
 };
 
+// Возвращает AM или PM
+export const getAMPM = (date) => {
+  return date.getHours() >= 0 && date.getHours() < 12 ? `AM` : `PM`;
+};
 // Просроченные задачи
 // new Date(obj.dueDate) < Date.now()
 

@@ -1,13 +1,13 @@
-import {makeMenu} from './components/menu.js';
+import {Menu} from './components/menu.js';
 import {LoadMoreButton} from './components/load-more-btn.js';
 import {Task} from './components/task.js';
-import {makeSearch} from './components/search.js';
+import {Search} from './components/search.js';
 import {Filter} from './components/filter.js';
-import {makeTaskEdit} from './components/task-edit.js';
+import {EditTask} from './components/task-edit.js';
 import {Board} from './components/board.js';
-import {makeTasksContainer} from './components/tasks-container.js';
-import {makeSortContainer} from './components/sort-container.js';
-import {makeSortElement} from './components/sort-element.js';
+import {TasksContainer} from './components/tasks-container.js';
+import {SortContainer} from './components/sort-container.js';
+import {SortElement} from './components/sort-element.js';
 import {FilterContainer} from './components/filter-container.js';
 import {makeTaskData} from './task-data.js';
 import {getRandomNumber, createElement} from './utils.js';
@@ -53,9 +53,9 @@ const render = (container, element, amount) => {
 };
 
 // МЕНЮ СТРАНИЦЫ
-render(menuContainer, createElement(makeMenu()));
+render(menuContainer, new Menu().getElement());
 // ФОРМА ПОИСКА
-render(mainContainer, createElement(makeSearch()));
+render(mainContainer, new Search().getElement());
 
 // ФИЛЬТРЫ
 // + блок для фильтра
@@ -124,7 +124,7 @@ const contentContainer = document.querySelector(`.board`);
 const renderSortFilter = (container, dataArr) => {
   let fragment = new DocumentFragment();
   dataArr.forEach((dataEl) => {
-    const el = createElement(makeSortElement(dataEl));
+    const el = new SortElement(dataEl).getElement();
     fragment.appendChild(el);
   });
   container.appendChild(fragment);
@@ -159,16 +159,16 @@ const renderStartContent = (container, tasksArr) => {
   } else {
     // chechIsOnlyArchivedTasks();
     // Рендерим sort-фильтр
-    render(contentContainer, createElement(makeSortContainer()));
+    render(contentContainer, new SortContainer().getElement());
     const sortContainer = contentContainer.querySelector(`.board__filter-list`);
     renderSortFilter(sortContainer, sortFilterData);
 
     // Контейнер для карточек
-    render(contentContainer, createElement(makeTasksContainer()));
+    render(contentContainer, new TasksContainer().getElement());
     const tasksContainer = document.querySelector(`.board__tasks`);
 
     // Рендерим карточку Edit
-    render(tasksContainer, createElement(makeTaskEdit(tasksArray[0])));
+    render(tasksContainer, new EditTask(tasksArray[0]).getElement());
     // Рендерим остальные карточки
     // render(tasksContainer, createElement(makeTask(makeTaskData())));
     renderTasks(tasksContainer, tasksArray.slice(1, TasksAmount.START_REST + 1));

@@ -1,6 +1,6 @@
 import {makeMenu} from './components/menu.js';
 import {makeLoadMoreBtn} from './components/load-more-btn.js';
-import {makeTask} from './components/task.js';
+import {Task} from './components/task.js';
 import {makeSearch} from './components/search.js';
 import {makeFilter} from './components/filter.js';
 import {makeTaskEdit} from './components/task-edit.js';
@@ -142,11 +142,10 @@ const onLoadMoreBtnClick = (evt) => {
 const renderTasks = (container, tasksArr) => {
   let fragment = new DocumentFragment();
   tasksArr.forEach((taskEl) => {
-    const el = createElement(makeTask(taskEl));
+    const el = new Task(taskEl).getElement();
     fragment.appendChild(el);
   });
   container.appendChild(fragment);
-  // console.log(tasksArr);
 };
 
 // Рендеринг стартового контента

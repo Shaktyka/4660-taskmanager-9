@@ -1,3 +1,6 @@
+// Массив названий месяцов года
+export const MONTHS = [`January`, `February`, `March`, `April`, `May`, `June`, `July`, `August`, `September`, `October`, `November`, `December`];
+
 // Генерация случайного числа от min до max включительно
 export const getRandomNumber = (min, max) => min + Math.floor(Math.random() * (max + 1 - min));
 

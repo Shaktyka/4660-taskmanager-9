@@ -138,12 +138,30 @@ const onLoadMoreBtnClick = (evt) => {
   // Добавление в контейнер ещё карточек из массива
 };
 
+// Замена одного элемента на другой
+
+
 // Рендеринг ещё 7 тасков
 const renderTasks = (container, tasksArr) => {
   let fragment = new DocumentFragment();
   tasksArr.forEach((taskEl) => {
-    const el = new Task(taskEl).getElement();
-    fragment.appendChild(el);
+
+    const task = new Task(taskEl).getElement();
+    const editTask = new EditTask(taskEl).getElement();
+
+    const editBtn = task.querySelector(`.card__btn--edit`);
+    editBtn.addEventListener(`click`, (evt) => {
+      evt.preventDefault();
+      container.replaceChild(editTask, task);
+    });
+
+    const editForm = editTask.querySelector(`form`);
+    editForm.addEventListener(`submit`, (evt) => {
+      evt.preventDefault();
+      container.replaceChild(task, editTask);
+    });
+
+    fragment.appendChild(task);
   });
   container.appendChild(fragment);
 };
@@ -168,10 +186,10 @@ const renderStartContent = (container, tasksArr) => {
     const tasksContainer = document.querySelector(`.board__tasks`);
 
     // Рендерим карточку Edit
-    render(tasksContainer, new EditTask(tasksArray[0]).getElement());
+    // render(tasksContainer, new EditTask(tasksArray[0]).getElement());
     // Рендерим остальные карточки
     // render(tasksContainer, createElement(makeTask(makeTaskData())));
-    renderTasks(tasksContainer, tasksArray.slice(1, TasksAmount.START_REST + 1));
+    renderTasks(tasksContainer, tasksArray.slice(0, TasksAmount.START));
 
     // Рендерим кнопку "LoadMore"
     if (tasksArray.length > TasksAmount.START) {

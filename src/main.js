@@ -10,7 +10,8 @@ import {SortContainer} from './components/sort-container.js';
 import {SortElement} from './components/sort-element.js';
 import {FilterContainer} from './components/filter-container.js';
 import {makeTaskData} from './task-data.js';
-import {getRandomNumber, createElement} from './utils.js';
+import {NoTasksElement} from './components/no-tasks-element.js';
+import {getRandomNumber} from './utils.js';
 import {sortFilterData, filterData} from './data.js';
 
 // Количество задач
@@ -25,10 +26,9 @@ const mainContainer = document.querySelector(`.main`);
 const tasksArray = [];
 // let copiedTasksArray = [];
 
-// Когда в списке нет задач
-const TextNoTasks = {
-  ONLY_ARCHIVED: `<p class="board__no-tasks">Click ADD NEW TASK in menu to create your first task</p>`,
-  AT_ALL: `<p class="board__no-tasks">Click ADD NEW TASK in menu to create your first task</p>`
+const NoTasksText = {
+  ALL_ARCHIVED: `Click ADD NEW TASK in menu to create your first task`,
+  NOT_AT_ALL: `Click ADD NEW TASK in menu to create your first task`
 };
 
 // Рендеринг массива с задачами
@@ -138,27 +138,42 @@ const onLoadMoreBtnClick = (evt) => {
   // Добавление в контейнер ещё карточек из массива
 };
 
-// Замена одного элемента на другой
-
-
-// Рендеринг ещё 7 тасков
+// Рендеринг карточек задач
 const renderTasks = (container, tasksArr) => {
   let fragment = new DocumentFragment();
   tasksArr.forEach((taskEl) => {
 
     const task = new Task(taskEl).getElement();
-    const editTask = new EditTask(taskEl).getElement();
-
     const editBtn = task.querySelector(`.card__btn--edit`);
+    const editTask = new EditTask(taskEl).getElement();
+    const editForm = editTask.querySelector(`form`);
+    const textarea = editTask.querySelector(`textarea`);
+
+    const documentEscKeydownHandler = (evt) => {
+      if (evt.key === `Escape` || evt.key === `Esc`) {
+        container.replaceChild(task, editTask);
+        document.removeEventListener(`keydown`, documentEscKeydownHandler);
+      }
+    };
+
+    textarea.addEventListener(`focus`, () => {
+      document.removeEventListener(`keydown`, documentEscKeydownHandler);
+    });
+
+    textarea.addEventListener(`blur`, () => {
+      document.addEventListener(`keydown`, documentEscKeydownHandler);
+    });
+
     editBtn.addEventListener(`click`, (evt) => {
       evt.preventDefault();
       container.replaceChild(editTask, task);
+      document.addEventListener(`keydown`, documentEscKeydownHandler);
     });
 
-    const editForm = editTask.querySelector(`form`);
     editForm.addEventListener(`submit`, (evt) => {
       evt.preventDefault();
       container.replaceChild(task, editTask);
+      document.removeEventListener(`keydown`, documentEscKeydownHandler);
     });
 
     fragment.appendChild(task);
@@ -170,10 +185,10 @@ const renderTasks = (container, tasksArr) => {
 const renderStartContent = (container, tasksArr) => {
   if (tasksArr.length === 0) {
     // Рендерим текст, что карточек нет
-    container.appendChild(createElement(TextNoTasks.AT_ALL));
+    container.appendChild(new NoTasksElement(NoTasksText.NOT_AT_ALL).getElement());
   } else if (tasksArr.length === document.querySelector(`.filter__archive-count`).textContent) {
     // Рендерим спец. строку, когда, кроме архивных, задач нет
-    container.appendChild(createElement(TextNoTasks.ONLY_ARCHIVED));
+    container.appendChild(new NoTasksElement(NoTasksText.ALL_ARCHIVED).getElement());
   } else {
     // chechIsOnlyArchivedTasks();
     // Рендерим sort-фильтр
@@ -185,10 +200,7 @@ const renderStartContent = (container, tasksArr) => {
     render(contentContainer, new TasksContainer().getElement());
     const tasksContainer = document.querySelector(`.board__tasks`);
 
-    // Рендерим карточку Edit
-    // render(tasksContainer, new EditTask(tasksArray[0]).getElement());
     // Рендерим остальные карточки
-    // render(tasksContainer, createElement(makeTask(makeTaskData())));
     renderTasks(tasksContainer, tasksArray.slice(0, TasksAmount.START));
 
     // Рендерим кнопку "LoadMore"

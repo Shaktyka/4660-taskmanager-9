@@ -1,15 +1,8 @@
-import {createElement} from '../utils.js';
+import {AbstractComponent} from './abstract-component.js';
 
-export class Menu {
+export class Menu extends AbstractComponent {
   constructor() {
-    this._element = null;
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-    return this._element;
+    super();
   }
 
   getTemplate() {
@@ -41,12 +34,6 @@ export class Menu {
             >STATISTICS</label
           >
     </section>`.trim();
-  }
-
-  removeElement() {
-    if (this._element) {
-      this._element = null;
-    }
   }
 }
 

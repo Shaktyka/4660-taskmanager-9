@@ -1,24 +1,17 @@
-import {addLeadZero, createElement, MONTHS} from '../utils.js';
+import {addLeadZero, MONTHS} from '../utils.js';
+import {AbstractComponent} from './abstract-component.js';
 
-// Класс "Карточка задачи"
-export class Task {
+export class Task extends AbstractComponent {
   constructor({description, dueDate, repeatingDays, tags, color, isFavorite, isArchive}) {
+    super();
     this._color = color;
     this._date = new Date(dueDate);
     this._description = description;
-    this._element = null;
     this._isArchive = isArchive;
     this._isFavorite = isFavorite;
     this._isRepeating = Object.keys(repeatingDays).some((day) => repeatingDays[day]);
     this._repeatingDays = repeatingDays;
     this._tags = tags;
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-    return this._element;
   }
 
   getTemplate() {
@@ -72,12 +65,6 @@ export class Task {
               </div>
             </div>
     </article>`.trim();
-  }
-
-  removeElement() {
-    if (this._element) {
-      this._element = null;
-    }
   }
 }
 

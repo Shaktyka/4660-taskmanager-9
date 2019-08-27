@@ -1,24 +1,18 @@
-import {MONTHS, addLeadZero, createElement} from '../utils.js';
+import {MONTHS, addLeadZero} from '../utils.js';
+import {AbstractComponent} from './abstract-component.js';
 
-export class EditTask {
+export class EditTask extends AbstractComponent {
   constructor({description, dueDate, repeatingDays, tags, color, isArchive, isFavorite}) {
+    super();
     this._color = color;
     this._description = description;
     this._date = new Date(dueDate);
     this._dueDate = dueDate;
-    this._element = null;
     this._isArchive = isArchive;
     this._isFavorite = isFavorite;
     this._isRepeating = Object.keys(repeatingDays).some((day) => repeatingDays[day]);
     this._repeatingDays = repeatingDays;
     this._tags = tags;
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-    return this._element;
   }
 
   getTemplate() {
@@ -249,12 +243,6 @@ export class EditTask {
               </div>
             </form>
           </article>`.trim();
-  }
-
-  removeElement() {
-    if (this._element) {
-      this._element = null;
-    }
   }
 }
 

@@ -18,6 +18,12 @@ export const createElement = (string) => {
   return div.firstChild;
 };
 
+// Удаляет элемент из DOM
+const remove = (element) => {
+  element.remove();
+  element.removeElement();
+};
+
 // Выявление повторяющихся задач
 export const hasRepeatingDays = (object) => {
   return Object.keys(object).some((day) => day);

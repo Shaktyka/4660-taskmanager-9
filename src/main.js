@@ -3,7 +3,7 @@ import {LoadMoreButton} from './components/load-more-btn.js';
 import {Task} from './components/task.js';
 import {Search} from './components/search.js';
 import {Filter} from './components/filter.js';
-import {EditTask} from './components/task-edit.js';
+import {EditTask} from './components/edit-task.js';
 import {Board} from './components/board.js';
 import {TasksContainer} from './components/tasks-container.js';
 import {SortContainer} from './components/sort-container.js';

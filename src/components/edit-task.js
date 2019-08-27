@@ -1,4 +1,4 @@
-import {MONTHS, getAMPM, addLeadZero, createElement} from '../utils.js';
+import {MONTHS, addLeadZero, createElement} from '../utils.js';
 
 export class EditTask {
   constructor({description, dueDate, repeatingDays, tags, color, isArchive, isFavorite}) {
@@ -55,7 +55,7 @@ export class EditTask {
 
                       <fieldset class="card__date-deadline" ${this._date ? `` : `disabled`}>
                         <label class="card__input-deadline-wrap">
-                          <input class="card__date" type="text" placeholder="" name="date" value="23 September 11:15 PM" value="${this._date.getDate() ? (this._date.getDate() + ` ` + MONTHS[this._date.getMonth()] + ` ` + addLeadZero(this._date.getHours()) + `:` + addLeadZero(this._date.getMinutes()) + ` ` + getAMPM(this._date)) : ``}" />
+                          <input class="card__date" type="text" placeholder="23 September 11:15 PM" name="date" value="${this._date.getDate()} ${MONTHS[this._date.getMonth()]} ${addLeadZero(this._date.getHours())}:${addLeadZero(this._date.getMinutes())} ${this._date.getHours() >= 12 ? `PM` : `AM`}" />
                         </label>
                       </fieldset>
 

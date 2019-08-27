@@ -1,5 +1,5 @@
 // Рендерит Mеню
-export const createMenuTemplate = () => {
+export const makeMenu = () => {
   return `<section class="control__btn-wrap">
           <input
             type="radio"

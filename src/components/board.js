@@ -1,4 +1,4 @@
 // Возвращает контейнер для контента
-export const createBoardTemplate = () => {
+export const makeBoard = () => {
   return `<section class="board container"></section>`.trim();
 };

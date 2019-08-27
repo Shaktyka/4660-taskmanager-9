@@ -24,6 +24,12 @@ const remove = (element) => {
   element.removeElement();
 };
 
+// const unrender = (element) => {
+//   if (element) {
+//     element.remove();
+//   }
+// };
+
 // Выявление повторяющихся задач
 export const hasRepeatingDays = (object) => {
   return Object.keys(object).some((day) => day);

@@ -1,8 +1,8 @@
 import {makeMenu} from './components/menu.js';
-import {makeLoadMoreBtn} from './components/load-more-btn.js';
+import {LoadMoreButton} from './components/load-more-btn.js';
 import {Task} from './components/task.js';
 import {makeSearch} from './components/search.js';
-import {makeFilter} from './components/filter.js';
+import {Filter} from './components/filter.js';
 import {makeTaskEdit} from './components/task-edit.js';
 import {Board} from './components/board.js';
 import {makeTasksContainer} from './components/tasks-container.js';
@@ -106,7 +106,7 @@ const renderFilter = (container, dataArr) => {
   dataArr.forEach((dataObj) => {
     const isActiveFilter = dataObj.title === `All`;
     const amount = getFilteredTasksAmount(tasksArray, dataObj.title);
-    const elements = createElement(makeFilter(dataObj, amount, isActiveFilter));
+    const elements = new Filter(dataObj, amount, isActiveFilter).getElement();
     Array.from(elements).forEach((el) => {
       fragment.appendChild(el);
     });
@@ -175,7 +175,7 @@ const renderStartContent = (container, tasksArr) => {
 
     // Рендерим кнопку "LoadMore"
     if (tasksArray.length > TasksAmount.START) {
-      render(contentContainer, createElement(makeLoadMoreBtn()));
+      render(contentContainer, new LoadMoreButton().getElement());
       const loadMoreBtn = contentContainer.querySelector(`.load-more`);
       loadMoreBtn.addEventListener(`click`, onLoadMoreBtnClick);
     }

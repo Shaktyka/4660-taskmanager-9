@@ -19,16 +19,12 @@ export const createElement = (string) => {
 };
 
 // Удаляет элемент из DOM
-const remove = (element) => {
-  element.remove();
-  element.removeElement();
+export const unrender = (element) => {
+  if (element) {
+    element.remove();
+    element.removeElement();
+  }
 };
-
-// const unrender = (element) => {
-//   if (element) {
-//     element.remove();
-//   }
-// };
 
 // Выявление повторяющихся задач
 export const hasRepeatingDays = (object) => {

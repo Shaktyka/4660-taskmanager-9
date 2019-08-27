@@ -1,14 +1,14 @@
-import {makeMenu} from './components/menu.js';
-import {makeLoadMoreBtn} from './components/load-more-btn.js';
-import {makeTask} from './components/task.js';
-import {makeSearch} from './components/search.js';
-import {makeFilter} from './components/filter.js';
-import {makeTaskEdit} from './components/task-edit.js';
-import {makeBoard} from './components/board.js';
-import {makeTasksContainer} from './components/tasks-container.js';
-import {makeSortContainer} from './components/sort-container.js';
-import {makeSortElement} from './components/sort-element.js';
-import {getFilterContainerTemplate} from './components/filter-container.js';
+import {Menu} from './components/menu.js';
+import {LoadMoreButton} from './components/load-more-btn.js';
+import {Task} from './components/task.js';
+import {Search} from './components/search.js';
+import {Filter} from './components/filter.js';
+import {EditTask} from './components/edit-task.js';
+import {Board} from './components/board.js';
+import {TasksContainer} from './components/tasks-container.js';
+import {SortContainer} from './components/sort-container.js';
+import {SortElement} from './components/sort-element.js';
+import {FilterContainer} from './components/filter-container.js';
 import {makeTaskData} from './task-data.js';
 import {getRandomNumber, createElement} from './utils.js';
 import {sortFilterData, filterData} from './data.js';
@@ -53,13 +53,13 @@ const render = (container, element, amount) => {
 };
 
 // МЕНЮ СТРАНИЦЫ
-render(menuContainer, createElement(makeMenu()));
+render(menuContainer, new Menu().getElement());
 // ФОРМА ПОИСКА
-render(mainContainer, createElement(makeSearch()));
+render(mainContainer, new Search().getElement());
 
 // ФИЛЬТРЫ
 // + блок для фильтра
-render(mainContainer, createElement(getFilterContainerTemplate()));
+render(mainContainer, new FilterContainer().getElement());
 const filterContainer = mainContainer.querySelector(`.main__filter`);
 
 // Выявление просроченного дедлайна
@@ -106,7 +106,7 @@ const renderFilter = (container, dataArr) => {
   dataArr.forEach((dataObj) => {
     const isActiveFilter = dataObj.title === `All`;
     const amount = getFilteredTasksAmount(tasksArray, dataObj.title);
-    const elements = createElement(makeFilter(dataObj, amount, isActiveFilter));
+    const elements = new Filter(dataObj, amount, isActiveFilter).getElement();
     Array.from(elements).forEach((el) => {
       fragment.appendChild(el);
     });
@@ -117,14 +117,14 @@ const renderFilter = (container, dataArr) => {
 renderFilter(filterContainer, filterData);
 
 // КОНТЕНТ
-render(mainContainer, createElement(makeBoard()));
+render(mainContainer, new Board().getElement());
 const contentContainer = document.querySelector(`.board`);
 
 // Рендеринт sort фильтра
 const renderSortFilter = (container, dataArr) => {
   let fragment = new DocumentFragment();
   dataArr.forEach((dataEl) => {
-    const el = createElement(makeSortElement(dataEl));
+    const el = new SortElement(dataEl).getElement();
     fragment.appendChild(el);
   });
   container.appendChild(fragment);
@@ -138,15 +138,32 @@ const onLoadMoreBtnClick = (evt) => {
   // Добавление в контейнер ещё карточек из массива
 };
 
+// Замена одного элемента на другой
+
+
 // Рендеринг ещё 7 тасков
 const renderTasks = (container, tasksArr) => {
   let fragment = new DocumentFragment();
   tasksArr.forEach((taskEl) => {
-    const el = createElement(makeTask(taskEl));
-    fragment.appendChild(el);
+
+    const task = new Task(taskEl).getElement();
+    const editTask = new EditTask(taskEl).getElement();
+
+    const editBtn = task.querySelector(`.card__btn--edit`);
+    editBtn.addEventListener(`click`, (evt) => {
+      evt.preventDefault();
+      container.replaceChild(editTask, task);
+    });
+
+    const editForm = editTask.querySelector(`form`);
+    editForm.addEventListener(`submit`, (evt) => {
+      evt.preventDefault();
+      container.replaceChild(task, editTask);
+    });
+
+    fragment.appendChild(task);
   });
   container.appendChild(fragment);
-  // console.log(tasksArr);
 };
 
 // Рендеринг стартового контента
@@ -160,23 +177,23 @@ const renderStartContent = (container, tasksArr) => {
   } else {
     // chechIsOnlyArchivedTasks();
     // Рендерим sort-фильтр
-    render(contentContainer, createElement(makeSortContainer()));
+    render(contentContainer, new SortContainer().getElement());
     const sortContainer = contentContainer.querySelector(`.board__filter-list`);
     renderSortFilter(sortContainer, sortFilterData);
 
     // Контейнер для карточек
-    render(contentContainer, createElement(makeTasksContainer()));
+    render(contentContainer, new TasksContainer().getElement());
     const tasksContainer = document.querySelector(`.board__tasks`);
 
     // Рендерим карточку Edit
-    render(tasksContainer, createElement(makeTaskEdit(tasksArray[0])));
+    // render(tasksContainer, new EditTask(tasksArray[0]).getElement());
     // Рендерим остальные карточки
     // render(tasksContainer, createElement(makeTask(makeTaskData())));
-    renderTasks(tasksContainer, tasksArray.slice(1, TasksAmount.START_REST + 1));
+    renderTasks(tasksContainer, tasksArray.slice(0, TasksAmount.START));
 
     // Рендерим кнопку "LoadMore"
     if (tasksArray.length > TasksAmount.START) {
-      render(contentContainer, createElement(makeLoadMoreBtn()));
+      render(contentContainer, new LoadMoreButton().getElement());
       const loadMoreBtn = contentContainer.querySelector(`.load-more`);
       loadMoreBtn.addEventListener(`click`, onLoadMoreBtnClick);
     }

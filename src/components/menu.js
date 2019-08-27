@@ -1,6 +1,19 @@
-// Рендерит Mеню
-export const makeMenu = () => {
-  return `<section class="control__btn-wrap">
+import {createElement} from '../utils.js';
+
+export class Menu {
+  constructor() {
+    this._element = null;
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+    return this._element;
+  }
+
+  getTemplate() {
+    return `<section class="control__btn-wrap">
           <input
             type="radio"
             name="control"
@@ -28,4 +41,13 @@ export const makeMenu = () => {
             >STATISTICS</label
           >
     </section>`.trim();
-};
+  }
+
+  removeElement() {
+    if (this._element) {
+      this._element = null;
+    }
+  }
+}
+
+export default Menu;

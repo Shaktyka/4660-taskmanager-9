@@ -13,6 +13,7 @@ import {makeTaskData} from './task-data.js';
 import {NoTasksElement} from './components/no-tasks-element.js';
 import {getRandomNumber} from './utils.js';
 import {sortFilterData, filterData} from './data.js';
+import {BoardController} from './controllers/board-controller.js';
 
 // Количество задач
 const TasksAmount = {
@@ -214,3 +215,8 @@ const renderStartContent = (container, tasksArr) => {
 
 // Стартовый рендеринг контента
 renderStartContent(contentContainer, tasksArray);
+
+// Вызываем BoardController
+// const tasksContainer = document.querySelector(`.board__tasks`);
+// const boardController = new BoardController(tasksContainer, tasksArray);
+// boardController.init();

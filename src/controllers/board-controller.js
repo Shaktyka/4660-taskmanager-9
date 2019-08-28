@@ -1,5 +1,3 @@
-import {Menu} from '../components/menu.js';
-import {Board} from '../components/board.js';
 import {TasksContainer} from '../components/tasks-container.js';
 import {Task} from '../components/task.js';
 import {EditTask} from '../components/edit-task.js';
@@ -13,6 +11,11 @@ const TasksAmount = {
   START: 8,
   STEP: 8,
   START_REST: 7
+};
+
+const Key = {
+  ESCAPE_IE: `Escape`,
+  ESCAPE: `Esc`,
 };
 
 const NoTasksText = {
@@ -29,27 +32,21 @@ export class BoardController {
     this._loadMoreBtn = new LoadMoreButton();
   }
 
-  // Логика отрисовки компонент
+  // Отрисовка контейнеров и карточек задач
   init() {
-
     if (this._tasks.length === 0) {
-      // Рендерим текст, что карточек нет
-      this._container.appendChild(new NoTasksElement(NoTasksText.NOT_AT_ALL).getElement());
+      this._container.appendChild(this._renderNoTasksMessage(NoTasksText.NOT_AT_ALL));
     } else if (this._tasks.length === document.querySelector(`.filter__archive-count`).textContent) {
-      // Рендерим спец. строку, когда, кроме архивных, задач нет
-      this._container.appendChild(new NoTasksElement(NoTasksText.ALL_ARCHIVED).getElement());
+      this._container.appendChild(this._renderNoTasksMessage(NoTasksText.ALL_ARCHIVED));
     } else {
-      // Рендерим фильтр сортировки
       this._renderSortFilter();
 
       // Контейнер для карточек
       const tasksContainer = this._tasksContainer.getElement();
       render(this._container, tasksContainer);
-      // const tasksContainer = document.querySelector(`.board__tasks`);
 
       // Рендерим карточки задач
       this._renderTasks(tasksContainer, this._tasks.slice(0, TasksAmount.START));
-      // renderTasks(tasksContainer, tasksArray.slice(0, TasksAmount.START));
 
       // Рендерим кнопку "LoadMore"
       if (this._tasks.length > TasksAmount.START) {
@@ -69,13 +66,56 @@ export class BoardController {
   }
 
   // Рендерим карточки задач
-  _renderTasks(container, tasksData) {
-    // console.log(`рендер карточек`);
+  _renderTasks(container, tasksArr) {
+    let fragment = new DocumentFragment();
+
+    tasksArr.forEach((taskData) => {
+      const task = new Task(taskData).getElement();
+      const editBtn = task.querySelector(`.card__btn--edit`);
+      const editTask = new EditTask(taskData).getElement();
+      const editForm = editTask.querySelector(`form`);
+      const textarea = editTask.querySelector(`textarea`);
+
+      const documentEscKeydownHandler = (evt) => {
+        if (evt.key === Key.ESCAPE || evt.key === Key.ESCAPE_IE) {
+          container.replaceChild(task, editTask);
+          document.removeEventListener(`keydown`, documentEscKeydownHandler);
+        }
+      };
+
+      textarea.addEventListener(`focus`, () => {
+        document.removeEventListener(`keydown`, documentEscKeydownHandler);
+      });
+
+      textarea.addEventListener(`blur`, () => {
+        document.addEventListener(`keydown`, documentEscKeydownHandler);
+      });
+
+      editBtn.addEventListener(`click`, (evt) => {
+        evt.preventDefault();
+        container.replaceChild(editTask, task);
+        document.addEventListener(`keydown`, documentEscKeydownHandler);
+      });
+
+      editForm.addEventListener(`submit`, (evt) => {
+        evt.preventDefault();
+        container.replaceChild(task, editTask);
+        document.removeEventListener(`keydown`, documentEscKeydownHandler);
+      });
+
+      fragment.appendChild(task);
+    });
+    container.appendChild(fragment);
   }
 
   // Рендерим одну задачу
-  _renderTask(taskData) {
-    //
+  _renderTask() {
+    // надо?
+  }
+
+  // Рендерим элемент с текстом об отсутствии карточек
+  _renderNoTasksMessage(text) {
+    return new NoTasksElement(text).getElement();
   }
 
   // При нажатии на фильтр сортировки
@@ -87,13 +127,9 @@ export class BoardController {
   // Обработчик клика по LoadMoreBtn
   _loadMoreBtnClickHandler(evt) {
     evt.preventDefault();
-    console.log(evt.target);
+    // console.log(evt.target);
   }
 
 }
 
 export default BoardController;
-
-
-// Рендерим контейнер для карточек и LoadMore
-// render(this._container, this._tasksContainer.getElement());

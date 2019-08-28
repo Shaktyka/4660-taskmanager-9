@@ -13,14 +13,6 @@
 // ТЕПЕРЬ НАМ НАДО ОТРИСОВАТЬ КОНТЕНТ В ЗАВ-ТИ ОТ ДАННЫХ
 
 
-
-// Обработчик нажатия на кнопку "Load More"
-const onLoadMoreBtnClick = (evt) => {
-  evt.preventDefault();
-  // Добавление в контейнер ещё карточек из массива
-};
-
-
 // Рендеринг отдельной задачи
 const renderTask = () => {
   const task = new Task(taskEl).getElement();
@@ -106,17 +98,6 @@ const renderStartContent = (container, tasksArr) => {
 
 // Стартовый рендеринг контента
 renderStartContent(contentContainer, tasksArray);
-
-
-
-
-
-
-
-
-
-
-
 
 
 const renderTasks = (container, tasksArr) => {

@@ -1,10 +1,10 @@
 import {AbstractComponent} from './abstract-component.js';
 
 export class Filter extends AbstractComponent {
-  constructor(data, amount, isActiveFilter = false) {
+  constructor(title, amount, isActiveFilter = false) {
     super();
     this._amount = amount;
-    this._title = data.title;
+    this._title = title;
     this._isActiveFilter = isActiveFilter;
   }
 

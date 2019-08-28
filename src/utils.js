@@ -7,6 +7,18 @@ export const getRandomNumber = (min, max) => min + Math.floor(Math.random() * (m
 // Добавляет 0 к количеству минут < 10
 export const addLeadZero = (units) => units < 10 ? (`0` + units) : units;
 
+// Рендеринг элементов в контейнер
+export const render = (container, element, amount) => {
+  let content = element;
+  if (amount) {
+    content = new DocumentFragment();
+    for (let i = 0; i < amount; i++) {
+      content.appendChild(element);
+    }
+  }
+  container.appendChild(content);
+};
+
 // Рендеринг элемента из разметки
 export const createElement = (string) => {
   const div = document.createElement(`div`);

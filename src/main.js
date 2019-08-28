@@ -1,57 +1,24 @@
 import {Menu} from './components/menu.js';
-import {LoadMoreButton} from './components/load-more-btn.js';
-import {Task} from './components/task.js';
 import {Search} from './components/search.js';
 import {Filter} from './components/filter.js';
-import {EditTask} from './components/edit-task.js';
 import {Board} from './components/board.js';
-import {TasksContainer} from './components/tasks-container.js';
-//import {SortContainer} from './components/sort-container.js';
-//import {SortElement} from './components/sort-element.js';
 import {FilterContainer} from './components/filter-container.js';
 import {makeTaskData} from './task-data.js';
-import {NoTasksElement} from './components/no-tasks-element.js';
-import {getRandomNumber} from './utils.js';
-import {sortFilterData, filterData} from './data.js';
+import {getRandomNumber, render} from './utils.js';
+import {filterData} from './data.js';
 import {BoardController} from './controllers/board-controller.js';
 
-// Количество задач
-const TasksAmount = {
-  START: 8,
-  STEP: 8,
-  START_REST: 7
-};
-
-const menuContainer = document.querySelector(`.main__control`);
 const mainContainer = document.querySelector(`.main`);
-const tasksArray = [];
-// let copiedTasksArray = [];
-
-const NoTasksText = {
-  ALL_ARCHIVED: `Click ADD NEW TASK in menu to create your first task`,
-  NOT_AT_ALL: `Click ADD NEW TASK in menu to create your first task`
-};
+const menuContainer = document.querySelector(`.main__control`);
 
 // Рендеринг массива с задачами
+const tasksArray = [];
 const renderTaskArray = (amount) => {
   for (let i = 0; i < amount; i++) {
     tasksArray.push(makeTaskData());
   }
 };
 renderTaskArray(getRandomNumber(5, 20));
-// copiedTasksArray = tasksArray.slice(); // Копия массива с карточками для вырезания
-
-// Рендеринг элементов в контейнер
-const render = (container, element, amount) => {
-  let content = element;
-  if (amount) {
-    content = new DocumentFragment();
-    for (let i = 0; i < amount; i++) {
-      content.appendChild(element);
-    }
-  }
-  container.appendChild(content);
-};
 
 // МЕНЮ СТРАНИЦЫ
 render(menuContainer, new Menu().getElement());
@@ -59,9 +26,8 @@ render(menuContainer, new Menu().getElement());
 render(mainContainer, new Search().getElement());
 
 // ФИЛЬТРЫ
-// + блок для фильтра
-render(mainContainer, new FilterContainer().getElement());
-const filterContainer = mainContainer.querySelector(`.main__filter`);
+const filterContainer = new FilterContainer().getElement();
+render(mainContainer, filterContainer);
 
 // Выявление просроченного дедлайна
 const getTaskFormatDate = (date) => {
@@ -69,7 +35,7 @@ const getTaskFormatDate = (date) => {
 };
 
 // Фильтрация массива данных карточек по названию фильтра
-const getFilteredTasksAmount = (dataArr, filterName) => {
+const getFilteredTasksAmount = (dataArr = [], filterName) => {
   let filteredArr = [];
 
   switch (filterName) {
@@ -101,122 +67,35 @@ const getFilteredTasksAmount = (dataArr, filterName) => {
   return filteredArr.length;
 };
 
-// Рендеринг фильтра
-const renderFilter = (container, dataArr) => {
-  let fragment = new DocumentFragment();
-  dataArr.forEach((dataObj) => {
-    const isActiveFilter = dataObj.title === `All`;
-    const amount = getFilteredTasksAmount(tasksArray, dataObj.title);
-    const elements = new Filter(dataObj, amount, isActiveFilter).getElement();
-    Array.from(elements).forEach((el) => {
-      fragment.appendChild(el);
-    });
-  });
-  container.appendChild(fragment);
+// Рендеринг одного фильтра
+const renderFilterElements = (dataObj) => {
+  const isActiveFilter = dataObj.title === `All`;
+  const amount = getFilteredTasksAmount(tasksArray, dataObj.title);
+  return new Filter(dataObj.title, amount, isActiveFilter).getElement();
 };
 
-renderFilter(filterContainer, filterData);
+// Рендеринг всех фильтров
+const renderFilters = (container, dataArr) => {
+  if (dataArr.length > 0) {
+    let fragment = new DocumentFragment();
 
-// КОНТЕНТ
-render(mainContainer, new Board().getElement());
-const contentContainer = document.querySelector(`.board`);
-
-// Рендеринт sort фильтра
-const renderSortFilter = (container, dataArr) => {
-  let fragment = new DocumentFragment();
-  dataArr.forEach((dataEl) => {
-    const el = new SortElement(dataEl).getElement();
-    fragment.appendChild(el);
-  });
-  container.appendChild(fragment);
-};
-
-// ТЕПЕРЬ НАМ НАДО ОТРИСОВАТЬ КОНТЕНТ В ЗАВ-ТИ ОТ ДАННЫХ
-
-// Обработчик нажатия на кнопку "Load More"
-const onLoadMoreBtnClick = (evt) => {
-  evt.preventDefault();
-  // Добавление в контейнер ещё карточек из массива
-};
-
-// Рендеринг карточек задач
-const renderTasks = (container, tasksArr) => {
-  let fragment = new DocumentFragment();
-  tasksArr.forEach((taskEl) => {
-
-    const task = new Task(taskEl).getElement();
-    const editBtn = task.querySelector(`.card__btn--edit`);
-    const editTask = new EditTask(taskEl).getElement();
-    const editForm = editTask.querySelector(`form`);
-    const textarea = editTask.querySelector(`textarea`);
-
-    const documentEscKeydownHandler = (evt) => {
-      if (evt.key === `Escape` || evt.key === `Esc`) {
-        container.replaceChild(task, editTask);
-        document.removeEventListener(`keydown`, documentEscKeydownHandler);
-      }
-    };
-
-    textarea.addEventListener(`focus`, () => {
-      document.removeEventListener(`keydown`, documentEscKeydownHandler);
+    dataArr.forEach((dataObj) => {
+      const filterElements = renderFilterElements(dataObj);
+      Array.from(filterElements).forEach((el) => {
+        fragment.appendChild(el);
+      });
     });
 
-    textarea.addEventListener(`blur`, () => {
-      document.addEventListener(`keydown`, documentEscKeydownHandler);
-    });
-
-    editBtn.addEventListener(`click`, (evt) => {
-      evt.preventDefault();
-      container.replaceChild(editTask, task);
-      document.addEventListener(`keydown`, documentEscKeydownHandler);
-    });
-
-    editForm.addEventListener(`submit`, (evt) => {
-      evt.preventDefault();
-      container.replaceChild(task, editTask);
-      document.removeEventListener(`keydown`, documentEscKeydownHandler);
-    });
-
-    fragment.appendChild(task);
-  });
-  container.appendChild(fragment);
-};
-
-// Рендеринг стартового контента
-const renderStartContent = (container, tasksArr) => {
-  if (tasksArr.length === 0) {
-    // Рендерим текст, что карточек нет
-    container.appendChild(new NoTasksElement(NoTasksText.NOT_AT_ALL).getElement());
-  } else if (tasksArr.length === document.querySelector(`.filter__archive-count`).textContent) {
-    // Рендерим спец. строку, когда, кроме архивных, задач нет
-    container.appendChild(new NoTasksElement(NoTasksText.ALL_ARCHIVED).getElement());
-  } else {
-    // chechIsOnlyArchivedTasks();
-    // Рендерим sort-фильтр
-    // render(contentContainer, new SortContainer().getElement());
-    // const sortContainer = contentContainer.querySelector(`.board__filter-list`);
-    // renderSortFilter(sortContainer, sortFilterData);
-
-    // Контейнер для карточек
-    render(contentContainer, new TasksContainer().getElement());
-    const tasksContainer = document.querySelector(`.board__tasks`);
-
-    // Рендерим остальные карточки
-    renderTasks(tasksContainer, tasksArray.slice(0, TasksAmount.START));
-
-    // Рендерим кнопку "LoadMore"
-    if (tasksArray.length > TasksAmount.START) {
-      render(contentContainer, new LoadMoreButton().getElement());
-      const loadMoreBtn = contentContainer.querySelector(`.load-more`);
-      loadMoreBtn.addEventListener(`click`, onLoadMoreBtnClick);
-    }
+    container.appendChild(fragment);
   }
 };
 
-// Стартовый рендеринг контента
-renderStartContent(contentContainer, tasksArray);
+renderFilters(filterContainer, filterData);
+
+// КОНТЕНТ
+const contentContainer = new Board().getElement();
+render(mainContainer, contentContainer);
 
 // Вызываем BoardController
-// const tasksContainer = document.querySelector(`.board__tasks`);
-// const boardController = new BoardController(tasksContainer, tasksArray);
-// boardController.init();
+const boardController = new BoardController(contentContainer, tasksArray);
+boardController.init();

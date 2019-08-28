@@ -1,10 +1,11 @@
 import {createElement} from '../utils.js';
 
-export class SortElement {
-  constructor({href, title}) {
+export class AbstractComponent {
+  constructor() {
+    if (new.target === AbstractComponent) {
+      throw new Error(`Can't instantiate AbstractComponent, only concrete one.`);
+    }
     this._element = null;
-    this._href = href;
-    this._title = title;
   }
 
   getElement() {
@@ -15,7 +16,7 @@ export class SortElement {
   }
 
   getTemplate() {
-    return `<a href="${this._href}" class="board__filter">SORT BY ${this._title}</a>`.trim();
+    throw new Error(`Abstract method not implemented: getTemplate`);
   }
 
   removeElement() {
@@ -25,4 +26,4 @@ export class SortElement {
   }
 }
 
-export default SortElement;
+export default AbstractComponent;

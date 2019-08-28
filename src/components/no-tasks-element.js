@@ -1,26 +1,13 @@
-import {createElement} from '../utils.js';
+import {AbstractComponent} from './abstract-component.js';
 
-export class NoTasksElement {
+export class NoTasksElement extends AbstractComponent {
   constructor({text}) {
-    this._element = null;
+    super();
     this._text = text;
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-    return this._element;
   }
 
   getTemplate() {
     return `<p class="board__no-tasks>${this._text}</p>`.trim();
-  }
-
-  removeElement() {
-    if (this._element) {
-      this._element = null;
-    }
   }
 }
 

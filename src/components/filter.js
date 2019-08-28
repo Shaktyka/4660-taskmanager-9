@@ -1,18 +1,11 @@
-import {createElement} from '../utils.js';
+import {AbstractComponent} from './abstract-component.js';
 
-export class Filter {
-  constructor(data, amount, isActiveFilter = false) {
+export class Filter extends AbstractComponent {
+  constructor(title, amount, isActiveFilter = false) {
+    super();
     this._amount = amount;
-    this._title = data.title;
-    this._element = null;
+    this._title = title;
     this._isActiveFilter = isActiveFilter;
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-    return this._element;
   }
 
   getTemplate() {
@@ -23,12 +16,6 @@ export class Filter {
     <label for="filter__${this._title.toLowerCase()}" class="filter__label">
       ${this._title.toLowerCase()} <span class="filter__${this._title.toLowerCase()}-count">${this._amount}</span>
     </label>`.trim();
-  }
-
-  removeElement() {
-    if (this._element) {
-      this._element = null;
-    }
   }
 }
 

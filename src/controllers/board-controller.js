@@ -41,7 +41,7 @@ export class BoardController {
     } else if (this._tasks.length === document.querySelector(`.filter__archive-count`).textContent) {
       this._container.appendChild(this._renderNoTasksMessage(NoTasksText.ALL_ARCHIVED));
     } else {
-
+      // Рендерим сортировку
       const sortContainer = this._sortContainer.getElement();
       render(this._container, sortContainer);
       this._renderSortFilter(sortContainer, sortFilterData);
@@ -55,11 +55,17 @@ export class BoardController {
 
       // Рендерим кнопку "LoadMore"
       if (this._tasks.length > TasksAmount.START) {
-        const loadMoreBtn = this._loadMoreBtn.getElement();
-        loadMoreBtn.addEventListener(`click`, this._loadMoreBtnClickHandler);
-        render(tasksContainer, loadMoreBtn);
+        this._renderLoadMoreBtn();
       }
     }
+  }
+
+  // Рендерим кнопку LoadMore
+  _renderLoadMoreBtn() {
+    // + Логику добавление LoadMoreBtn (сравнивать кол-во карточек в блоке и длину массива с карточками?)
+    const loadMoreBtn = this._loadMoreBtn.getElement();
+    loadMoreBtn.addEventListener(`click`, this._loadMoreBtnClickHandler);
+    render(this._tasksContainer.getElement(), loadMoreBtn);
   }
 
   // Рендерим SortFilter
@@ -67,13 +73,12 @@ export class BoardController {
     let fragment = new DocumentFragment();
 
     sortData.forEach((sortObj) => {
-      const sortEl = new Sort(sortObj).getElement();
-      fragment.appendChild(sortEl);
+      const sortFilter = new Sort(sortObj).getElement();
+      sortFilter.addEventListener(`click`, (evt) => this._sortFilterClickHandler(evt));
+      fragment.appendChild(sortFilter);
     });
 
     container.appendChild(fragment);
-    // this._sortContainer.getElement()
-    // sortFilter.addEventListener(`click`, (evt) => this._sortFilterClickHandler(evt));
   }
 
   // Рендерим карточки задач
@@ -132,7 +137,25 @@ export class BoardController {
   // При нажатии на фильтр сортировки
   _sortFilterClickHandler(evt) {
     evt.preventDefault();
-    // console.log(evt.target);
+    const tasksContainer = this._tasksContainer.getElement();
+    tasksContainer.innerHTML = ``;
+
+    // Сортируем
+    switch (evt.target.dataset.sort) {
+      case `date-up`:
+        const sortedByDateUpTasks = this._tasks.slice().sort((a, b) => a.dueDate - b.dueDate);
+        this._renderTasks(tasksContainer, sortedByDateUpTasks);
+        break;
+      case `date-down`:
+        const sortedByDateDownTasks = this._tasks.slice().sort((a, b) => b.dueDate - a.dueDate);
+        this._renderTasks(tasksContainer, sortedByDateDownTasks);
+        break;
+      case `default`:
+        this._renderTasks(tasksContainer, this._tasks);
+        break;
+    }
+
+    this._renderLoadMoreBtn();
   }
 
   // Обработчик клика по LoadMoreBtn

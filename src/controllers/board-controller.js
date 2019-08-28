@@ -1,9 +1,11 @@
 import {TasksContainer} from '../components/tasks-container.js';
 import {Task} from '../components/task.js';
 import {EditTask} from '../components/edit-task.js';
-import {SortFilter} from '../components/sort-filter.js';
+import {SortContainer} from '../components/sort-container.js';
 import {NoTasksElement} from '../components/no-tasks-element.js';
 import {LoadMoreButton} from '../components/load-more-btn.js';
+import {Sort} from '../components/sort.js';
+import {sortFilterData} from '../data.js';
 import {render} from '../utils.js';
 
 // Количество задач
@@ -27,7 +29,7 @@ export class BoardController {
   constructor(container, tasks) {
     this._container = container;
     this._tasks = tasks;
-    this._sortFilter = new SortFilter();
+    this._sortContainer = new SortContainer();
     this._tasksContainer = new TasksContainer();
     this._loadMoreBtn = new LoadMoreButton();
   }
@@ -39,7 +41,10 @@ export class BoardController {
     } else if (this._tasks.length === document.querySelector(`.filter__archive-count`).textContent) {
       this._container.appendChild(this._renderNoTasksMessage(NoTasksText.ALL_ARCHIVED));
     } else {
-      this._renderSortFilter();
+
+      const sortContainer = this._sortContainer.getElement();
+      render(this._container, sortContainer);
+      this._renderSortFilter(sortContainer, sortFilterData);
 
       // Контейнер для карточек
       const tasksContainer = this._tasksContainer.getElement();
@@ -55,14 +60,20 @@ export class BoardController {
         render(tasksContainer, loadMoreBtn);
       }
     }
-
   }
 
   // Рендерим SortFilter
-  _renderSortFilter() {
-    const sortFilter = this._sortFilter.getElement();
-    render(this._container, sortFilter);
-    sortFilter.addEventListener(`click`, (evt) => this._sortFilterClickHandler(evt));
+  _renderSortFilter(container, sortData) {
+    let fragment = new DocumentFragment();
+
+    sortData.forEach((sortObj) => {
+      const sortEl = new Sort(sortObj).getElement();
+      fragment.appendChild(sortEl);
+    });
+
+    container.appendChild(fragment);
+    // this._sortContainer.getElement()
+    // sortFilter.addEventListener(`click`, (evt) => this._sortFilterClickHandler(evt));
   }
 
   // Рендерим карточки задач

@@ -6,8 +6,8 @@ import {Filter} from './components/filter.js';
 import {EditTask} from './components/edit-task.js';
 import {Board} from './components/board.js';
 import {TasksContainer} from './components/tasks-container.js';
-import {SortContainer} from './components/sort-container.js';
-import {SortElement} from './components/sort-element.js';
+//import {SortContainer} from './components/sort-container.js';
+//import {SortElement} from './components/sort-element.js';
 import {FilterContainer} from './components/filter-container.js';
 import {makeTaskData} from './task-data.js';
 import {NoTasksElement} from './components/no-tasks-element.js';
@@ -193,9 +193,9 @@ const renderStartContent = (container, tasksArr) => {
   } else {
     // chechIsOnlyArchivedTasks();
     // Рендерим sort-фильтр
-    render(contentContainer, new SortContainer().getElement());
-    const sortContainer = contentContainer.querySelector(`.board__filter-list`);
-    renderSortFilter(sortContainer, sortFilterData);
+    // render(contentContainer, new SortContainer().getElement());
+    // const sortContainer = contentContainer.querySelector(`.board__filter-list`);
+    // renderSortFilter(sortContainer, sortFilterData);
 
     // Контейнер для карточек
     render(contentContainer, new TasksContainer().getElement());

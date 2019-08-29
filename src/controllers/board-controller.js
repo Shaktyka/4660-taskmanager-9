@@ -10,7 +10,7 @@ import {render, unrender} from '../utils.js';
 
 // Количество задач
 const TasksAmount = {
-  START: 8,
+  INIT: 8,
   STEP: 8
 };
 
@@ -52,7 +52,7 @@ export class BoardController {
       render(this._container, tasksContainer);
 
       // Рендерим карточки задач
-      this._renderTasks(tasksContainer, this._tasks.slice(0, TasksAmount.START));
+      this._renderTasks(tasksContainer, this._tasks.slice(0, TasksAmount.INIT));
 
       // Рендерим кнопку "LoadMore"
       if (tasksContainer.querySelectorAll(`article`).length < this._tasks.length) {
@@ -61,7 +61,7 @@ export class BoardController {
     }
   }
 
-  // Рендерим кнопку LoadMore
+  // Рендеринг кнопки LoadMoreBtn
   _renderLoadMoreBtn() {
     this._loadMoreBtn = new LoadMoreButton();
     this._loadMoreBtn.getElement().addEventListener(`click`, this._loadMoreBtnClickHandler);
@@ -79,7 +79,7 @@ export class BoardController {
     }
   }
 
-  // Рендерим SortFilter
+  // Рендеринг SortFilter
   _renderSortFilter(container, sortData) {
     let fragment = new DocumentFragment();
 

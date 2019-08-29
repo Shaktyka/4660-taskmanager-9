@@ -35,6 +35,10 @@ const getTaskFormatDate = (date) => {
   return `${date.getDate()} ${date.getMonth() + 1} ${date.getFullYear()}`;
 };
 
+// const getOverduedTasks = (date) => {
+//   return 
+// };
+
 // Фильтрация массива данных карточек по названию фильтра
 const getFilteredTasksAmount = (dataArr = [], filterName) => {
   let filteredArr = [];
@@ -44,7 +48,7 @@ const getFilteredTasksAmount = (dataArr = [], filterName) => {
       filteredArr = dataArr.filter((obj) => !obj.isArchive);
       break;
     case `Overdue`:
-      filteredArr = dataArr.filter((obj) => new Date(obj.dueDate) < Date.now());
+      filteredArr = dataArr.filter((obj) => new Date(obj.dueDate));
       break;
     case `Today`:
       filteredArr = dataArr.filter((obj) => getTaskFormatDate(new Date(obj.dueDate)) === getTaskFormatDate(new Date()));

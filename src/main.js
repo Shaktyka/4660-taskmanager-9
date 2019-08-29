@@ -19,6 +19,7 @@ const renderTaskArray = (amount) => {
   }
 };
 renderTaskArray(getRandomNumber(5, 20));
+console.log(tasksArray.length);
 
 // МЕНЮ СТРАНИЦЫ
 render(menuContainer, new Menu().getElement());
@@ -40,7 +41,7 @@ const getFilteredTasksAmount = (dataArr = [], filterName) => {
 
   switch (filterName) {
     case `All`:
-      filteredArr = dataArr;
+      filteredArr = dataArr.filter((obj) => !obj.isArchive);
       break;
     case `Overdue`:
       filteredArr = dataArr.filter((obj) => new Date(obj.dueDate) < Date.now());

@@ -11,8 +11,7 @@ import {render} from '../utils.js';
 // Количество задач
 const TasksAmount = {
   START: 8,
-  STEP: 8,
-  START_REST: 7
+  STEP: 8
 };
 
 const Key = {
@@ -62,7 +61,6 @@ export class BoardController {
 
   // Рендерим кнопку LoadMore
   _renderLoadMoreBtn() {
-    // + Логику добавление LoadMoreBtn (сравнивать кол-во карточек в блоке и длину массива с карточками?)
     const loadMoreBtn = this._loadMoreBtn.getElement();
     loadMoreBtn.addEventListener(`click`, this._loadMoreBtnClickHandler);
     render(this._tasksContainer.getElement(), loadMoreBtn);
@@ -161,7 +159,11 @@ export class BoardController {
   // Обработчик клика по LoadMoreBtn
   _loadMoreBtnClickHandler(evt) {
     evt.preventDefault();
-    // console.log(evt.target);
+    const renderedTasksAmount = document.querySelectorAll(`article`).length;
+    const index = renderedTasksAmount;
+    this._renderTasks(document.querySelector(`.board__tasks`), this._tasks.slice(index, TasksAmount.STEP))
+    // Получаем индекс, с которого отрезать данные для отрисовки, по кол-ву карточек в контейнере
+    // Вырезаем х карточек и передаём на рендер
   }
 
 }

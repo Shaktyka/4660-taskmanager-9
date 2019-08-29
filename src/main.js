@@ -19,7 +19,7 @@ const renderTaskArray = (amount) => {
   }
 };
 renderTaskArray(getRandomNumber(5, 20));
-console.log(tasksArray.length);
+// console.log(tasksArray.length);
 
 // МЕНЮ СТРАНИЦЫ
 render(menuContainer, new Menu().getElement());

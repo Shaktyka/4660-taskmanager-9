@@ -15,7 +15,7 @@ export class Task extends AbstractComponent {
   }
 
   getTemplate() {
-    return `<article class="card card--${this._color} ${this._isRepeating ? `card--repeat` : ``} ${this._date < Date.now() ? `card--deadline` : ``}">
+    return `<article class="card card--${this._color} ${this._isRepeating ? `card--repeat` : ``} ${this._date < (new Date() - 24 * 3600 * 1000) ? `card--deadline` : ``}">
             <div class="card__form">
               <div class="card__inner">
                 <div class="card__control">

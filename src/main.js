@@ -30,7 +30,7 @@ render(mainContainer, new Search().getElement());
 const filterContainer = new FilterContainer().getElement();
 render(mainContainer, filterContainer);
 
-// Выявление просроченного дедлайна
+// Получение даты в формате ДД месяц ГГГГ
 const getTaskFormatDate = (date) => {
   return `${date.getDate()} ${date.getMonth() + 1} ${date.getFullYear()}`;
 };

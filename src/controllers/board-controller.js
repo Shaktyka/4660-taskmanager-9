@@ -6,7 +6,7 @@ import {NoTasksElement} from '../components/no-tasks-element.js';
 import {LoadMoreButton} from '../components/load-more-btn.js';
 import {Sort} from '../components/sort.js';
 import {sortFilterData} from '../data.js';
-import {render} from '../utils.js';
+import {render, unrender} from '../utils.js';
 
 // Количество задач
 const TasksAmount = {
@@ -30,7 +30,9 @@ export class BoardController {
     this._tasks = tasks;
     this._sortContainer = new SortContainer();
     this._tasksContainer = new TasksContainer();
-    this._loadMoreBtn = new LoadMoreButton();
+    this._loadMoreBtn = null;
+
+    this._loadMoreBtnClickHandler = this._loadMoreBtnClickHandler.bind(this);
   }
 
   // Отрисовка контейнеров и карточек задач
@@ -53,7 +55,7 @@ export class BoardController {
       this._renderTasks(tasksContainer, this._tasks.slice(0, TasksAmount.START));
 
       // Рендерим кнопку "LoadMore"
-      if (this._tasks.length > TasksAmount.START) {
+      if (tasksContainer.querySelectorAll(`article`).length < this._tasks.length) {
         this._renderLoadMoreBtn();
       }
     }
@@ -61,9 +63,20 @@ export class BoardController {
 
   // Рендерим кнопку LoadMore
   _renderLoadMoreBtn() {
-    const loadMoreBtn = this._loadMoreBtn.getElement();
-    loadMoreBtn.addEventListener(`click`, this._loadMoreBtnClickHandler);
-    render(this._tasksContainer.getElement(), loadMoreBtn);
+    this._loadMoreBtn = new LoadMoreButton();
+    this._loadMoreBtn.getElement().addEventListener(`click`, this._loadMoreBtnClickHandler);
+    render(this._tasksContainer.getElement(), this._loadMoreBtn.getElement());
+  }
+
+  // Обработчик клика по LoadMoreBtn
+  _loadMoreBtnClickHandler(evt) {
+    evt.preventDefault();
+    unrender(this._loadMoreBtn);
+    const renderedTasksAmount = this._tasksContainer.getElement().querySelectorAll(`article`).length;
+    this._renderTasks(this._tasksContainer.getElement(), this._tasks.slice(renderedTasksAmount, renderedTasksAmount + TasksAmount.STEP));
+    if (this._tasksContainer.getElement().querySelectorAll(`article`).length < this._tasks.length) {
+      this._renderLoadMoreBtn();
+    }
   }
 
   // Рендерим SortFilter
@@ -154,16 +167,6 @@ export class BoardController {
     }
 
     this._renderLoadMoreBtn();
-  }
-
-  // Обработчик клика по LoadMoreBtn
-  _loadMoreBtnClickHandler(evt) {
-    evt.preventDefault();
-    const renderedTasksAmount = document.querySelectorAll(`article`).length;
-    const index = renderedTasksAmount;
-    this._renderTasks(document.querySelector(`.board__tasks`), this._tasks.slice(index, TasksAmount.STEP))
-    // Получаем индекс, с которого отрезать данные для отрисовки, по кол-ву карточек в контейнере
-    // Вырезаем х карточек и передаём на рендер
   }
 
 }

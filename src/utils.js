@@ -33,7 +33,7 @@ export const createElement = (string) => {
 // Удаляет элемент из DOM
 export const unrender = (element) => {
   if (element) {
-    element.remove();
+    element.getElement().remove();
     element.removeElement();
   }
 };

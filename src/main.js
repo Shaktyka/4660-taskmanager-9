@@ -18,7 +18,7 @@ const renderTaskArray = (amount) => {
     tasksArray.push(makeTaskData());
   }
 };
-renderTaskArray(getRandomNumber(5, 20));
+renderTaskArray(getRandomNumber(8, 30));
 // console.log(tasksArray.length);
 
 // МЕНЮ СТРАНИЦЫ
